@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <robot name="JulietteY20MP_crowdbotsim">
   <material name="defaultMat">
     <color rgba="0.8 0.8 0.8 1" />
@@ -11,6 +11,15 @@
   </material>
   <material name="HeadYaw_JULIETTE_TETE_GROUPE_Mat">
     <color rgba="0.8 0.8 0.8 1" />
+  </material>
+  <material name="PepperBlackMat">
+    <color rgba="0.1471 0.1471 0.1471 1" />
+  </material>
+  <material name="PepperBlueMat">
+    <color rgba="0.2564 0.3478 0.6838 1" />
+  </material>
+  <material name="logoCB2">
+    <texture filename="package://crowdbotsim/resources/logoCB.png" />
   </material>
   <material name="LShoulderPitch_JULIETTE_BRAS_DR_.001Mat">
     <color rgba="0.8 0.8 0.8 1" />
@@ -117,20 +126,17 @@
   <material name="WheelFR_GROUPE_01_JULIETT.002Mat">
     <color rgba="0.8 0.8 0.8 1" />
   </material>
-  <material name="PepperBlackMat">
-    <color rgba="0.1471 0.1471 0.1471 1" />
-  </material>
   <link name="base_link">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0" />
-      <mass value="0.001" />
+      <mass value="1E-07" />
       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
     </inertial>
   </link>
   <link name="base_footprint">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0" />
-      <mass value="0.001" />
+      <mass value="1E-07" />
       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
     </inertial>
   </link>
@@ -142,13 +148,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/KneePitch_shiny.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/KneePitch_shiny.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="defaultMat" />
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://meshes/KneePitch_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/KneePitch_0.10.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -161,14 +167,14 @@
     <visual>
       <origin xyz="0 0 0.268" />
       <geometry>
-        <mesh filename="package://meshes/HipPitch_milky.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/HipPitch_milky.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="PepperWhiteBright" />
     </visual>
     <collision>
       <origin xyz="0 0 0.268" />
       <geometry>
-        <mesh filename="package://meshes/HipPitch_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/HipPitch_0.10.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -181,14 +187,14 @@
     <visual>
       <origin xyz="0 0 0.079" />
       <geometry>
-        <mesh filename="package://meshes/HipRoll_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/HipRoll.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="HipRoll_GROUPE_01_JULIETT.000Mat" />
     </visual>
     <collision>
       <origin xyz="0 0 0.079" />
       <geometry>
-        <mesh filename="package://meshes/HipRoll_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/HipRoll_0.10.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -201,14 +207,14 @@
     <visual>
       <origin xyz="0 0 0.139" />
       <geometry>
-        <mesh filename="package://meshes/Torso_milky.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/Torso_milky.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="PepperWhiteBright" />
     </visual>
     <collision>
       <origin xyz="0 0 0.139" />
       <geometry>
-        <mesh filename="package://meshes/Torso_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/Torso_0.10.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -220,13 +226,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/HeadYaw_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/HeadYaw.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="HeadYaw_JULIETTE_TETE_GROUPE_Mat" />
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://meshes/HeadYaw_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/HeadYaw_0.10.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -238,15 +244,159 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/HeadPitch_shiny.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/HeadPitch_eyes.stl" scale="0.1 0.1 0.1" />
       </geometry>
-      <material name="PepperWhiteBright" />
+      <material name="PepperBlackMat" />
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://meshes/HeadPitch_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/HeadPitch_0.10.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
+  </link>
+  <link name="HeadPitch_milky">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://crowdbotsim/meshes/HeadPitch_milky.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+      <material name="defaultMat" />
+    </visual>
+  </link>
+  <link name="HeadPitch_ears">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://crowdbotsim/meshes/HeadPitch_ears.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+      <material name="PepperBlueMat" />
+    </visual>
+  </link>
+  <link name="HeadPitch_shiny">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://crowdbotsim/meshes/HeadPitch_shiny.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+      <material name="PepperWhiteBright" />
+    </visual>
+  </link>
+  <link name="RSpeaker_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="LSpeaker_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="CameraTop_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="CameraTop_optical_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="CameraDepth_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="CameraDepth_optical_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="HeadTouchFront_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="CameraBottom_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="CameraBottom_optical_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="HeadTouchRear_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="HeadTouchMiddle_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="Torso_shiny">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.0695" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0.0695" />
+      <geometry>
+        <mesh filename="package://crowdbotsim/meshes/Torso_shiny.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+      <material name="defaultMat" />
+    </visual>
+  </link>
+  <link name="Torso_transparent">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.0695" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0.0695" />
+      <geometry>
+        <mesh filename="package://crowdbotsim/meshes/Torso_transparent.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+      <material name="logoCB2" />
+    </visual>
   </link>
   <link name="LShoulder">
     <inertial>
@@ -256,13 +406,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/LShoulderPitch_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LShoulderPitch.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="LShoulderPitch_JULIETTE_BRAS_DR_.001Mat" />
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://meshes/LShoulderPitch_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LShoulderPitch_0.10.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -274,15 +424,28 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/LShoulderRoll_milky.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LShoulderRoll_milky.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="PepperWhiteBright" />
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://meshes/LShoulderRoll_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LShoulderRoll_0.10.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
+  </link>
+  <link name="LShoulderRoll_shiny">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://crowdbotsim/meshes/LShoulderRoll_shiny.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+      <material name="defaultMat" />
+    </visual>
   </link>
   <link name="LElbow">
     <inertial>
@@ -292,13 +455,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/LElbowYaw_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LElbowYaw.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="LElbowYaw_JULIETTE_AV_BRAS_.026Mat" />
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://meshes/LElbowYaw_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LElbowYaw_0.10.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -310,15 +473,28 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/LElbowRoll_shiny.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LElbowRoll_shiny.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="defaultMat" />
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://meshes/LElbowRoll_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LElbowRoll_0.10.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
+  </link>
+  <link name="LElbowRoll_milky">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://crowdbotsim/meshes/LElbowRoll_milky.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+      <material name="PepperWhiteBright" />
+    </visual>
   </link>
   <link name="l_wrist">
     <inertial>
@@ -328,13 +504,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/LWristYaw.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LWristYaw.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="PepperWhiteBright" />
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://meshes/LWristYaw.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LWristYaw.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -342,6 +518,13 @@
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0" />
       <mass value="0.0020000001" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="LHandTouchBack_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
     </inertial>
   </link>
@@ -354,14 +537,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger21.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger21.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="LFinger21_JULIETTE_AV_BRAS_.077Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger21.dae" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger21.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -374,14 +557,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger22.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger22.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="LFinger22_JULIETTE_AV_BRAS_.078Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger22.dae" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger22.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -394,14 +577,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger23.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger23.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="LFinger23_JULIETTE_AV_BRAS_.079Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger23.dae" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger23.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -414,14 +597,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger11.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger11.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="LFinger11_JULIETTE_AV_BRAS_.075Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger11.dae" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger11.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -434,14 +617,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger12.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger12.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="LFinger12_JULIETTE_AV_BRAS_.076Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger12.dae" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger12.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -454,14 +637,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger13.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger13.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="LFinger13_JULIETTE_AV_BRAS_.010Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger13.dae" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger13.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -474,14 +657,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger41.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger41.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="LFinger41_JULIETTE_AV_BRAS_.083Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger41.dae" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger41.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -494,14 +677,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger42.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger42.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="LFinger42_JULIETTE_AV_BRAS_.084Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger42.dae" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger42.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -514,14 +697,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger43.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger43.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="LFinger43_JULIETTE_AV_BRAS_.085Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger43.dae" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger43.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -534,14 +717,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger31.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger31.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="LFinger31_JULIETTE_AV_BRAS_.080Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger31.dae" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger31.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -554,14 +737,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger32.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger32.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="LFinger32_JULIETTE_AV_BRAS_.081Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger32.dae" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger32.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -574,14 +757,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger33.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger33.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="LFinger33_JULIETTE_AV_BRAS_.082Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LFinger33.dae" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LFinger33.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -594,14 +777,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LThumb1.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LThumb1.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="LThumb1_JULIETTE_AV_BRAS_.086Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LThumb1.dae" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LThumb1.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -614,14 +797,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LThumb2.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LThumb2.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="LThumb2_JULIETTE_AV_BRAS_.087Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/LThumb2.dae" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/LThumb2.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -633,13 +816,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/RShoulderPitch_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RShoulderPitch.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="RShoulderPitch_JULIETTE_BRAS_DR_ALLMat" />
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://meshes/RShoulderPitch_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RShoulderPitch_0.10.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -651,25 +834,25 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/RShoulderRoll_milky.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RShoulderRoll_milky.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="PepperWhiteBright" />
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://meshes/RShoulderRoll_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RShoulderRoll_0.10.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
   <link name="RShoulderRoll_shiny">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0" />
-      <mass value="1E-05" />
+      <mass value="1E-07" />
       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/RShoulderRoll_shiny.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RShoulderRoll_shiny.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="defaultMat" />
     </visual>
@@ -682,13 +865,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/RElbowYaw_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RElbowYaw.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="RElbowYaw_JULIETTE_AV_BRAS_.003Mat" />
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://meshes/RElbowYaw_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RElbowYaw_0.10.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -700,25 +883,25 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/RElbowRoll_shiny.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RElbowRoll_shiny.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="defaultMat" />
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://meshes/RElbowRoll_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RElbowRoll_0.10.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
   <link name="RElbowRoll_milky">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0" />
-      <mass value="1E-05" />
+      <mass value="1E-07" />
       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/RElbowRoll_milky.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RElbowRoll_milky.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="PepperWhiteBright" />
     </visual>
@@ -731,13 +914,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/RWristYaw.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RWristYaw.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="PepperWhiteBright" />
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://meshes/RWristYaw.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://crowdbotsim/meshes/RWristYaw.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -751,7 +934,7 @@
   <link name="RHandTouchBack_frame">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0" />
-      <mass value="1E-05" />
+      <mass value="1E-07" />
       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
     </inertial>
   </link>
@@ -764,14 +947,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger41.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger41.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="RFinger41_JULIETTE_AV_BRAS_.099Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger41.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger41.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -784,14 +967,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger42.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger42.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="RFinger42_JULIETTE_AV_BRAS_.100Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger42.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger42.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -804,14 +987,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger43.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger43.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="RFinger43_JULIETTE_AV_BRAS_.101Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger43.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger43.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -824,14 +1007,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger31.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger31.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="RFinger31_JULIETTE_AV_BRAS_.096Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger31.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger31.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -844,14 +1027,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger32.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger32.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="RFinger32_JULIETTE_AV_BRAS_.097Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger32.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger32.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -864,14 +1047,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger33.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger33.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="RFinger33_JULIETTE_AV_BRAS_.098Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger33.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger33.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -884,14 +1067,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger21.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger21.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="RFinger21_JULIETTE_AV_BRAS_.093Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger21.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger21.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -904,14 +1087,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger22.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger22.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="RFinger22_JULIETTE_AV_BRAS_.094Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger22.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger22.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -924,14 +1107,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger23.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger23.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="RFinger23_JULIETTE_AV_BRAS_.095Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger23.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger23.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -944,14 +1127,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger11.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger11.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="RFinger11_JULIETTE_AV_BRAS_.090Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger11.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger11.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -964,14 +1147,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger12.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger12.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="RFinger12_JULIETTE_AV_BRAS_.091Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger12.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger12.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -984,14 +1167,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger13.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger13.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="RFinger13_JULIETTE_AV_BRAS_.092Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RFinger13.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://crowdbotsim/meshes/RFinger13.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -1004,14 +1187,14 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RThumb1.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RThumb1.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="RThumb1_JULIETTE_AV_BRAS_.088Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RThumb1.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://crowdbotsim/meshes/RThumb1.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -1024,16 +1207,176 @@
     <visual>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RThumb2.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/RThumb2.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="RThumb2_JULIETTE_AV_BRAS_.089Mat" />
     </visual>
     <collision>
       <origin rpy="-1.57 0 0" />
       <geometry>
-        <mesh filename="package://meshes/RThumb2.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://crowdbotsim/meshes/RThumb2.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
+  </link>
+  <link name="ImuTorsoAccelerometer_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="ImuTorsoGyrometer_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="Tablet_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="ChestButton_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="HipPitch_shiny">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.268" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0.268" />
+      <geometry>
+        <mesh filename="package://crowdbotsim/meshes/HipPitch_shiny.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+      <material name="defaultMat" />
+    </visual>
+  </link>
+  <link name="KneePitch_milky">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://crowdbotsim/meshes/KneePitch_milky.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+      <material name="PepperWhiteBright" />
+    </visual>
+  </link>
+  <link name="SonarBack_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="VerticalLeftLaser_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="SurroundingFrontLaser_device_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="BumperB_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="SurroundingLeftLaser_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="ShovelLaser_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="SurroundingRightLaser_device_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="SurroundingLeftLaser_device_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="SurroundingRightLaser_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="VerticalRightLaser_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="SonarFront_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="BumperFL_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="ImuBaseAccelerometer_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="BumperFR_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <link name="SurroundingFrontLaser_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1E-07" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
   </link>
   <link name="WheelFL_link">
     <inertial>
@@ -1043,13 +1386,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/WheelFL_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/WheelFL.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="WheelFL_GROUPE_01_JULIETT.003Mat" />
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://meshes/WheelFL_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/WheelFL_0.10.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -1061,13 +1404,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/WheelB_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/WheelB.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="WheelB_GROUPE_01_JULIETT.004Mat" />
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://meshes/WheelB_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/WheelB_0.10.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
@@ -1079,20 +1422,20 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="package://meshes/WheelFR_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/WheelFR.stl" scale="0.1 0.1 0.1" />
       </geometry>
       <material name="WheelFR_GROUPE_01_JULIETT.002Mat" />
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://meshes/WheelFR_0.10.stl" scale="0.1 0.1 0.1" />
+        <mesh filename="package://crowdbotsim/meshes/WheelFR_0.10.stl" scale="0.1 0.1 0.1" />
       </geometry>
     </collision>
   </link>
   <link name="sick_laser_rear">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0" />
-      <mass value="1E-05" />
+      <mass value="0.1000000015" />
       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
     </inertial>
     <visual>
@@ -1105,7 +1448,7 @@
   <link name="sick_laser_front">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0" />
-      <mass value="1E-05" />
+      <mass value="0.1000000015" />
       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
     </inertial>
     <visual>
@@ -1115,363 +1458,552 @@
       <material name="PepperBlackMat" />
     </visual>
   </link>
-  <joint name="base_link_base_footprint_joint" type="fixed">
+  <joint name="base_link_joint" type="fixed">
     <parent link="base_link" />
     <child link="base_footprint" />
   </joint>
-  <joint name="base_footprint_Tibia_joint" type="fixed">
+  <joint name="base_footprint_joint" type="fixed">
     <origin xyz="0 0 0.334" />
     <parent link="base_footprint" />
     <child link="Tibia" />
   </joint>
-  <joint name="Tibia_Pelvis_joint" type="revolute">
+  <joint name="KneePitch" type="revolute">
     <parent link="Tibia" />
     <child link="Pelvis" />
     <axis xyz="0 -1 0" />
-    <dynamics damping="1" friction="100" />
     <limit lower="-0.514872" upper="0.514872" effort="1000" velocity="1000" />
   </joint>
-  <joint name="Pelvis_Hip_joint" type="revolute">
+  <joint name="HipPitch" type="revolute">
     <origin xyz="0 0 0.268" />
     <parent link="Pelvis" />
     <child link="Hip" />
     <axis xyz="0 -1 0" />
-    <dynamics damping="1" friction="100" />
     <limit lower="-1.03847" upper="1.03847" effort="1000" velocity="1000" />
   </joint>
-  <joint name="Hip_torso_joint" type="revolute">
+  <joint name="HipRoll" type="revolute">
     <origin xyz="-2E-05 0 0.079" />
     <parent link="Hip" />
     <child link="torso" />
     <axis xyz="-1 0 0" />
-    <dynamics damping="1" friction="100" />
     <limit lower="-0.514872" upper="0.514872" effort="1000" velocity="1000" />
   </joint>
-  <joint name="torso_Neck_joint" type="revolute">
+  <joint name="HeadYaw" type="revolute">
     <origin xyz="-0.038 0 0.3089" />
     <parent link="torso" />
     <child link="Neck" />
     <axis xyz="0 0 1" />
-    <dynamics damping="1" friction="100" />
     <limit lower="-2.08567" upper="2.08567" effort="1000" velocity="1000" />
   </joint>
-  <joint name="Neck_Head_joint" type="revolute">
+  <joint name="HeadPitch" type="revolute">
     <parent link="Neck" />
     <child link="Head" />
     <axis xyz="0 1 0" />
-    <dynamics damping="1" friction="100" />
     <limit lower="-0.706858" upper="0.637045" effort="1000" velocity="1000" />
   </joint>
-  <joint name="torso_LShoulder_joint" type="revolute">
+  <joint name="HeadPitch_milky_joint" type="fixed">
+    <parent link="Head" />
+    <child link="HeadPitch_milky" />
+  </joint>
+  <joint name="HeadPitch_ears_joint" type="fixed">
+    <parent link="Head" />
+    <child link="HeadPitch_ears" />
+  </joint>
+  <joint name="HeadPitch_shiny_joint" type="fixed">
+    <parent link="Head" />
+    <child link="HeadPitch_shiny" />
+  </joint>
+  <joint name="SpeakerRight_sensor_fixedjoint" type="fixed">
+    <parent link="Head" />
+    <child link="RSpeaker_frame" />
+  </joint>
+  <joint name="SpeakerLeft_sensor_fixedjoint" type="fixed">
+    <parent link="Head" />
+    <child link="LSpeaker_frame" />
+  </joint>
+  <joint name="CameraTop_sensor_fixedjoint" type="fixed">
+    <origin xyz="0.08601 0 0.16284" />
+    <parent link="Head" />
+    <child link="CameraTop_frame" />
+  </joint>
+  <joint name="CameraTop_optical_frame_fixedjoint" type="fixed">
+    <origin rpy="-1.570796 0 -1.570796" />
+    <parent link="CameraTop_frame" />
+    <child link="CameraTop_optical_frame" />
+  </joint>
+  <joint name="CameraDepth_sensor_fixedjoint" type="fixed">
+    <origin xyz="0.05138 0.039 0.1194" />
+    <parent link="Head" />
+    <child link="CameraDepth_frame" />
+  </joint>
+  <joint name="CameraDepth_optical_frame_fixedjoint" type="fixed">
+    <origin rpy="-1.570796 0 -1.570796" />
+    <parent link="CameraDepth_frame" />
+    <child link="CameraDepth_optical_frame" />
+  </joint>
+  <joint name="Head/Touch/Front_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 0.20944 0" xyz="0.028175 0 0.21267" />
+    <parent link="Head" />
+    <child link="HeadTouchFront_frame" />
+  </joint>
+  <joint name="CameraBottom_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 0.698132 0" xyz="0.09262 0 0.06177" />
+    <parent link="Head" />
+    <child link="CameraBottom_frame" />
+  </joint>
+  <joint name="CameraBottom_optical_frame_fixedjoint" type="fixed">
+    <origin rpy="-1.570796 0 -1.570796" />
+    <parent link="CameraBottom_frame" />
+    <child link="CameraBottom_optical_frame" />
+  </joint>
+  <joint name="Head/Touch/Rear_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 5.969026 0" xyz="-0.03376 0 0.21052" />
+    <parent link="Head" />
+    <child link="HeadTouchRear_frame" />
+  </joint>
+  <joint name="Head/Touch/Middle_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 6.248279 0" xyz="0.0041 0 0.2159" />
+    <parent link="Head" />
+    <child link="HeadTouchMiddle_frame" />
+  </joint>
+  <joint name="Torso_shiny_joint" type="fixed">
+    <origin xyz="0 0 0.0695" />
+    <parent link="torso" />
+    <child link="Torso_shiny" />
+  </joint>
+  <joint name="Torso_transparent_joint" type="fixed">
+    <origin xyz="0 0 0.0695" />
+    <parent link="torso" />
+    <child link="Torso_transparent" />
+  </joint>
+  <joint name="LShoulderPitch" type="revolute">
     <origin xyz="-0.057 0.14974 0.22582" />
     <parent link="torso" />
     <child link="LShoulder" />
     <axis xyz="0 1 0" />
     <limit lower="-2.08567" upper="2.08567" effort="1000" velocity="1000" />
   </joint>
-  <joint name="LShoulder_LBicep_joint" type="revolute">
+  <joint name="LShoulderRoll" type="revolute">
     <parent link="LShoulder" />
     <child link="LBicep" />
     <axis xyz="0 0 1" />
     <limit lower="0.008727" upper="1.56207" effort="1000" velocity="1000" />
   </joint>
-  <joint name="LBicep_LElbow_joint" type="revolute">
+  <joint name="LShoulderRoll_shiny_joint" type="fixed">
+    <parent link="LBicep" />
+    <child link="LShoulderRoll_shiny" />
+  </joint>
+  <joint name="LElbowYaw" type="revolute">
     <origin rpy="0 6.126106 0" xyz="0.1812 0.015 0.00013" />
     <parent link="LBicep" />
     <child link="LElbow" />
     <axis xyz="1 0 0" />
     <limit lower="-2.08567" upper="2.08567" effort="1000" velocity="1000" />
   </joint>
-  <joint name="LElbow_LForeArm_joint" type="revolute">
+  <joint name="LElbowRoll" type="revolute">
     <parent link="LElbow" />
     <child link="LForeArm" />
     <axis xyz="0 0 1" />
     <limit lower="-1.56207" upper="-0.008727" effort="1000" velocity="1000" />
   </joint>
-  <joint name="LForeArm_l_wrist_joint" type="revolute">
+  <joint name="LElbowRoll_milky_joint" type="fixed">
+    <parent link="LForeArm" />
+    <child link="LElbowRoll_milky" />
+  </joint>
+  <joint name="LWristYaw" type="revolute">
     <origin xyz="0.15 0 0" />
     <parent link="LForeArm" />
     <child link="l_wrist" />
     <axis xyz="1 0 0" />
     <limit lower="-1.82387" upper="1.82387" effort="1000" velocity="1000" />
   </joint>
-  <joint name="l_wrist_l_gripper_joint" type="revolute">
+  <joint name="LHand" type="revolute">
     <origin xyz="0.025 0 0" />
     <parent link="l_wrist" />
     <child link="l_gripper" />
     <axis xyz="1 0 0" />
     <limit lower="0.02" upper="0.98" effort="1000" velocity="1000" />
   </joint>
-  <joint name="l_wrist_LFinger21_link_joint" type="revolute">
+  <joint name="LHand/Touch/Back_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 4.712389 -1.570786" xyz="0.0523 0 0.0304" />
+    <parent link="l_wrist" />
+    <child link="LHandTouchBack_frame" />
+  </joint>
+  <joint name="LFinger21" type="revolute">
     <origin rpy="-4.712385 1.0472 -0.061086" xyz="0.0873 -0.0073 0.006" />
     <parent link="l_wrist" />
     <child link="LFinger21_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="LFinger21_link_LFinger22_link_joint" type="revolute">
+  <joint name="LFinger22" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.018 0 0" />
     <parent link="LFinger21_link" />
     <child link="LFinger22_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="LFinger22_link_LFinger23_link_joint" type="revolute">
+  <joint name="LFinger23" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.018 0 0" />
     <parent link="LFinger22_link" />
     <child link="LFinger23_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="l_wrist_LFinger11_link_joint" type="revolute">
+  <joint name="LFinger11" type="revolute">
     <origin rpy="-4.539165 1.04064 -0.033433" xyz="0.0821 -0.0268 0.004" />
     <parent link="l_wrist" />
     <child link="LFinger11_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="LFinger11_link_LFinger12_link_joint" type="revolute">
+  <joint name="LFinger12" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.018 0 0" />
     <parent link="LFinger11_link" />
     <child link="LFinger12_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="LFinger12_link_LFinger13_link_joint" type="revolute">
+  <joint name="LFinger13" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.018 0 0" />
     <parent link="LFinger12_link" />
     <child link="LFinger13_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="l_wrist_LFinger41_link_joint" type="revolute">
+  <joint name="LFinger41" type="revolute">
     <origin rpy="-4.885615 1.04064 -6.214846" xyz="0.074 0.0309 0" />
     <parent link="l_wrist" />
     <child link="LFinger41_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="LFinger41_link_LFinger42_link_joint" type="revolute">
+  <joint name="LFinger42" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.018 0 0" />
     <parent link="LFinger41_link" />
     <child link="LFinger42_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="LFinger42_link_LFinger43_link_joint" type="revolute">
+  <joint name="LFinger43" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.018 0 0" />
     <parent link="LFinger42_link" />
     <child link="LFinger43_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="l_wrist_LFinger31_link_joint" type="revolute">
+  <joint name="LFinger31" type="revolute">
     <origin rpy="-4.816825 1.04483 -0.029314" xyz="0.0833 0.0123 0.004" />
     <parent link="l_wrist" />
     <child link="LFinger31_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="LFinger31_link_LFinger32_link_joint" type="revolute">
+  <joint name="LFinger32" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.018 0 0" />
     <parent link="LFinger31_link" />
     <child link="LFinger32_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="LFinger32_link_LFinger33_link_joint" type="revolute">
+  <joint name="LFinger33" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.018 0 0" />
     <parent link="LFinger32_link" />
     <child link="LFinger33_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="l_wrist_LThumb1_link_joint" type="revolute">
+  <joint name="LThumb1" type="revolute">
     <origin rpy="-2.55836 0.80626 -5.749207" xyz="0.0482 -0.0357 -0.0199" />
     <parent link="l_wrist" />
     <child link="LThumb1_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="LThumb1_link_LThumb2_link_joint" type="revolute">
+  <joint name="LThumb2" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.022 0 0" />
     <parent link="LThumb1_link" />
     <child link="LThumb2_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="torso_RShoulder_joint" type="revolute">
+  <joint name="RShoulderPitch" type="revolute">
     <origin xyz="-0.057 -0.14974 0.22582" />
     <parent link="torso" />
     <child link="RShoulder" />
     <axis xyz="0 1 0" />
     <limit lower="-2.08567" upper="2.08567" effort="1000" velocity="1000" />
   </joint>
-  <joint name="RShoulder_RBicep_joint" type="revolute">
+  <joint name="RShoulderRoll" type="revolute">
     <parent link="RShoulder" />
     <child link="RBicep" />
     <axis xyz="0 0 1" />
     <limit lower="-1.56207" upper="-0.008727" effort="1000" velocity="1000" />
   </joint>
-  <joint name="RBicep_RShoulderRoll_shiny_joint" type="fixed">
+  <joint name="RShoulderRoll_shiny_joint" type="fixed">
     <parent link="RBicep" />
     <child link="RShoulderRoll_shiny" />
   </joint>
-  <joint name="RBicep_RElbow_joint" type="revolute">
+  <joint name="RElbowYaw" type="revolute">
     <origin rpy="0 6.126106 0" xyz="0.1812 -0.015 0.00013" />
     <parent link="RBicep" />
     <child link="RElbow" />
     <axis xyz="1 0 0" />
     <limit lower="-2.08567" upper="2.08567" effort="1000" velocity="1000" />
   </joint>
-  <joint name="RElbow_RForeArm_joint" type="revolute">
+  <joint name="RElbowRoll" type="revolute">
     <parent link="RElbow" />
     <child link="RForeArm" />
     <axis xyz="0 0 1" />
     <limit lower="0.008727" upper="1.56207" effort="1000" velocity="1000" />
   </joint>
-  <joint name="RForeArm_RElbowRoll_milky_joint" type="fixed">
+  <joint name="RElbowRoll_milky_joint" type="fixed">
     <parent link="RForeArm" />
     <child link="RElbowRoll_milky" />
   </joint>
-  <joint name="RForeArm_r_wrist_joint" type="revolute">
+  <joint name="RWristYaw" type="revolute">
     <origin xyz="0.15 0 0" />
     <parent link="RForeArm" />
     <child link="r_wrist" />
     <axis xyz="1 0 0" />
     <limit lower="-1.82387" upper="1.82387" effort="1000" velocity="1000" />
   </joint>
-  <joint name="r_wrist_r_gripper_joint" type="revolute">
+  <joint name="RHand" type="revolute">
     <origin xyz="0.025 0 0" />
     <parent link="r_wrist" />
     <child link="r_gripper" />
     <axis xyz="1 0 0" />
     <limit lower="0.02" upper="0.98" effort="1000" velocity="1000" />
   </joint>
-  <joint name="r_wrist_RHandTouchBack_frame_joint" type="fixed">
+  <joint name="RHand/Touch/Back_sensor_fixedjoint" type="fixed">
     <origin rpy="0 4.712389 -1.570786" xyz="0.0523 0 0.0304" />
     <parent link="r_wrist" />
     <child link="RHandTouchBack_frame" />
   </joint>
-  <joint name="r_wrist_RFinger41_link_joint" type="revolute">
+  <joint name="RFinger41" type="revolute">
     <origin rpy="-4.539165 1.04064 -0.06834" xyz="0.074 -0.0309 0" />
     <parent link="r_wrist" />
     <child link="RFinger41_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="RFinger41_link_RFinger42_link_joint" type="revolute">
+  <joint name="RFinger42" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.018 0 0" />
     <parent link="RFinger41_link" />
     <child link="RFinger42_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="RFinger42_link_RFinger43_link_joint" type="revolute">
+  <joint name="RFinger43" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.018 0 0" />
     <parent link="RFinger42_link" />
     <child link="RFinger43_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="r_wrist_RFinger31_link_joint" type="revolute">
+  <joint name="RFinger31" type="revolute">
     <origin rpy="-4.607955 1.04483 -6.253869" xyz="0.0833 -0.0123 0.004" />
     <parent link="r_wrist" />
     <child link="RFinger31_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="RFinger31_link_RFinger32_link_joint" type="revolute">
+  <joint name="RFinger32" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.018 0 0" />
     <parent link="RFinger31_link" />
     <child link="RFinger32_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="RFinger32_link_RFinger33_link_joint" type="revolute">
+  <joint name="RFinger33" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.018 0 0" />
     <parent link="RFinger32_link" />
     <child link="RFinger33_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="r_wrist_RFinger21_link_joint" type="revolute">
+  <joint name="RFinger21" type="revolute">
     <origin rpy="-4.712386 1.0472 -6.222099" xyz="0.0873 0.0073 0.006" />
     <parent link="r_wrist" />
     <child link="RFinger21_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="RFinger21_link_RFinger22_link_joint" type="revolute">
+  <joint name="RFinger22" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.018 0 0" />
     <parent link="RFinger21_link" />
     <child link="RFinger22_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="RFinger22_link_RFinger23_link_joint" type="revolute">
+  <joint name="RFinger23" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.018 0 0" />
     <parent link="RFinger22_link" />
     <child link="RFinger23_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="r_wrist_RFinger11_link_joint" type="revolute">
+  <joint name="RFinger11" type="revolute">
     <origin rpy="-4.885615 1.04064 -6.249752" xyz="0.0821 0.0268 0.004" />
     <parent link="r_wrist" />
     <child link="RFinger11_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="RFinger11_link_RFinger12_link_joint" type="revolute">
+  <joint name="RFinger12" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.018 0 0" />
     <parent link="RFinger11_link" />
     <child link="RFinger12_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="RFinger12_link_RFinger13_link_joint" type="revolute">
+  <joint name="RFinger13" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.018 0 0" />
     <parent link="RFinger12_link" />
     <child link="RFinger13_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="r_wrist_RThumb1_link_joint" type="revolute">
+  <joint name="RThumb1" type="revolute">
     <origin rpy="-0.58323 0.80626 -0.533978" xyz="0.0482 0.0357 -0.0199" />
     <parent link="r_wrist" />
     <child link="RThumb1_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="RThumb1_link_RThumb2_link_joint" type="revolute">
+  <joint name="RThumb2" type="revolute">
     <origin rpy="0 0 -1.0472" xyz="0.022 0 0" />
     <parent link="RThumb1_link" />
     <child link="RThumb2_link" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.872665" effort="1000" velocity="1000" />
   </joint>
-  <joint name="Tibia_WheelFL_link_joint" type="fixed">
+  <joint name="Accelerometer_sensor_fixedjoint" type="fixed">
+    <origin xyz="0.00239 -0.03575 0.14526" />
+    <parent link="torso" />
+    <child link="ImuTorsoAccelerometer_frame" />
+  </joint>
+  <joint name="Gyrometer_sensor_fixedjoint" type="fixed">
+    <origin xyz="0.00204 -0.03491 0.12941" />
+    <parent link="torso" />
+    <child link="ImuTorsoGyrometer_frame" />
+  </joint>
+  <joint name="Tablet_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 5.759586 0" xyz="0.083925 0 0.20151" />
+    <parent link="torso" />
+    <child link="Tablet_frame" />
+  </joint>
+  <joint name="ChestBoard/Button_sensor_fixedjoint" type="fixed">
+    <origin xyz="0.049871 0.001588 0.194163" />
+    <parent link="torso" />
+    <child link="ChestButton_frame" />
+  </joint>
+  <joint name="HipPitch_shiny_joint" type="fixed">
+    <parent link="Pelvis" />
+    <child link="HipPitch_shiny" />
+  </joint>
+  <joint name="KneePitch_milky_joint" type="fixed">
+    <parent link="Tibia" />
+    <child link="KneePitch_milky" />
+  </joint>
+  <joint name="Sonar/Back_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 6.073747 -3.14159" xyz="-0.0718 0 -0.0534" />
+    <parent link="Tibia" />
+    <child link="SonarBack_frame" />
+  </joint>
+  <joint name="LaserSensor/VerticalLeft_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 0.349066 0" xyz="0.0562 0 -0.0692" />
+    <parent link="Tibia" />
+    <child link="VerticalLeftLaser_frame" />
+  </joint>
+  <joint name="LaserSensor/Front_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 0.349066 0" xyz="0.0562 0 -0.0692" />
+    <parent link="Tibia" />
+    <child link="SurroundingFrontLaser_device_frame" />
+  </joint>
+  <joint name="Bumper/Back_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 0 -3.14159" xyz="-0.251 0 -0.264" />
+    <parent link="Tibia" />
+    <child link="BumperB_frame" />
+  </joint>
+  <joint name="LaserSensor/Left_projected_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 0 -4.525905" xyz="-0.018 0.0899 -0.334" />
+    <parent link="Tibia" />
+    <child link="SurroundingLeftLaser_frame" />
+  </joint>
+  <joint name="LaserSensor/Shovel_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 0.349066 0" xyz="0.0562 0 -0.0692" />
+    <parent link="Tibia" />
+    <child link="ShovelLaser_frame" />
+  </joint>
+  <joint name="LaserSensor/Right_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 0.349066 -1.5708" xyz="-0.018 -0.0899 -0.0759" />
+    <parent link="Tibia" />
+    <child link="SurroundingRightLaser_device_frame" />
+  </joint>
+  <joint name="LaserSensor/Left_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 0.349066 -4.712386" xyz="-0.018 0.0899 -0.0759" />
+    <parent link="Tibia" />
+    <child link="SurroundingLeftLaser_device_frame" />
+  </joint>
+  <joint name="LaserSensor/Right_projected_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 0 -1.75728" xyz="-0.018 -0.0899 -0.334" />
+    <parent link="Tibia" />
+    <child link="SurroundingRightLaser_frame" />
+  </joint>
+  <joint name="LaserSensor/VerticalRight_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 0.349066 0" xyz="0.0562 0 -0.0692" />
+    <parent link="Tibia" />
+    <child link="VerticalRightLaser_frame" />
+  </joint>
+  <joint name="Sonar/Front_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 5.960327 0" xyz="0.0699 0 -0.1023" />
+    <parent link="Tibia" />
+    <child link="SonarFront_frame" />
+  </joint>
+  <joint name="Bumper/FrontLeft_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 0 -5.794325" xyz="0.129 0.227 -0.264" />
+    <parent link="Tibia" />
+    <child link="BumperFL_frame" />
+  </joint>
+  <joint name="AccelerometerBase_sensor_fixedjoint" type="fixed">
+    <origin xyz="0.0147 -0.0017 -0.26319" />
+    <parent link="Tibia" />
+    <child link="ImuBaseAccelerometer_frame" />
+  </joint>
+  <joint name="Bumper/FrontRight_sensor_fixedjoint" type="fixed">
+    <origin rpy="0 0 -0.48886" xyz="0.129 -0.227 -0.264" />
+    <parent link="Tibia" />
+    <child link="BumperFR_frame" />
+  </joint>
+  <joint name="LaserSensor/Front_projected_sensor_fixedjoint" type="fixed">
+    <origin xyz="0.0562 0 -0.334" />
+    <parent link="Tibia" />
+    <child link="SurroundingFrontLaser_frame" />
+  </joint>
+  <joint name="WheelFL" type="continuous">
     <origin rpy="0 0 -5.208015" xyz="0.09 0.155 -0.264" />
     <parent link="Tibia" />
     <child link="WheelFL_link" />
+    <axis xyz="1 0 0" />
   </joint>
-  <joint name="Tibia_WheelB_link_joint" type="fixed">
+  <joint name="WheelB" type="continuous">
     <origin rpy="0 0 -3.14159" xyz="-0.17 0 -0.264" />
     <parent link="Tibia" />
     <child link="WheelB_link" />
+    <axis xyz="1 0 0" />
   </joint>
-  <joint name="Tibia_WheelFR_link_joint" type="fixed">
+  <joint name="WheelFR" type="continuous">
     <origin rpy="0 0 -1.07517" xyz="0.09 -0.155 -0.264" />
     <parent link="Tibia" />
     <child link="WheelFR_link" />
+    <axis xyz="1 0 0" />
   </joint>
-  <joint name="Tibia_sick_laser_rear_joint" type="fixed">
+  <joint name="sick_laser_rear" type="fixed">
     <origin rpy="0 0 -3.141593" xyz="-0.245 0 -0.1" />
     <parent link="Tibia" />
     <child link="sick_laser_rear" />
   </joint>
-  <joint name="Tibia_sick_laser_front_joint" type="fixed">
+  <joint name="sick_laser_front" type="fixed">
     <origin xyz="0.245 0 -0.1" />
     <parent link="Tibia" />
     <child link="sick_laser_front" />
