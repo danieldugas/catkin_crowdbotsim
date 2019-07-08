@@ -17,7 +17,6 @@ def publish_clock():
 
     ### Set up clock publisher
     clock_pub = rospy.Publisher('clock', Clock, queue_size = 1)
-    clock_pub2 = rospy.Publisher('myclock', Clock, queue_size = 1)
 
     msg = Clock()
     msg.clock = rospy.Time()
@@ -30,7 +29,6 @@ def publish_clock():
         nsecs = 1e9 * (current_time - secs)
         msg.clock =  rospy.Time(secs,nsecs)
         clock_pub.publish(msg)
-        clock_pub2.publish(msg)
         current_time += delta_time
         sleep(sleep_time)
 
