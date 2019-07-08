@@ -12,7 +12,7 @@ rospy.init_node('joy_to_twist', anonymous = True)
 
 
 #### Setup joy_to_twist Publisher 
-joy_to_twist_pub = rospy.Publisher(topic, Twist, queue_size = 5)
+joy_to_twist_pub = rospy.Publisher(topic, Twist, queue_size = 1)
 
 msg = Twist()
 
