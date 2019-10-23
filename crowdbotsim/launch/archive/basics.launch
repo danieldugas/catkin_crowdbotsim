@@ -1,0 +1,12 @@
+<launch>
+
+    <arg name="hz" value="500"/>
+    <arg name="crowd_size" value="20"/>
+
+	<node name="robot_controller" pkg="crowdbotsim" type="joy_to_twist.py" args="$(arg hz) /pepper/vel"/>
+	<node name="crowd_controller" pkg="crowdbotsim" type="TwistArrayStampedPublisher.py" args="$(arg hz) /crowd/vel $(arg crowd_size)"/>
+    <node name="image_republisher" pkg="image_transport" type="republish" args="compressed in:=/pepper/sensors/rgb out:=/camera/rgb/image_raw"/>
+	<node name="graph" pkg="rqt_graph" type="rqt_graph"/>
+
+</launch>
+

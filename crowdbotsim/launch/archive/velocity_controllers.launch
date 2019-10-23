@@ -1,0 +1,6 @@
+<launch>
+    <rosparam file="$(find crowdbotsim)/config/diff_drive_controller.yaml" command="load"/>
+    <node name="diffdrive_hardware_interface" pkg="crowdbotsim" type="DiffDrive_hardware_interface_node" output="screen"/>
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="mobile_base_controller"/>
+    
+</launch>

@@ -14,10 +14,18 @@ limitations under the License.
 -->
 
 <launch>
+  	<arg name="robot" default="turtlebot"/>
+
 	<param name ="/use_sim_time" value="true"/>
+
+	<node pkg="crowdbotsim" type="clock_publisher.py" name="clock_publisher" args="0.02 0.02"/>
 
 	<include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch">
 		<param name="port" value="9090"/>
+	</include>
+
+	<include file="$(find crowdbotsim)/launch/joint_state_subscriber.launch"> 
+		<param robot="$(arg robot)"/>
 	</include>
 
 </launch>

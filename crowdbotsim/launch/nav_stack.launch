@@ -1,0 +1,9 @@
+<launch>
+    
+    <arg name="hardware_ns" default="hardware_ttbot"/>
+    <rosparam file="$(find crowdbotsim)/config/$(arg hardware_ns).yaml" command="load"/>
+
+
+    <node name="diff_drive_controller" pkg="crowdbotsim" type="diff_drive_controller.py" output="screen" args="$(arg hardware_ns)"/>
+
+</launch>

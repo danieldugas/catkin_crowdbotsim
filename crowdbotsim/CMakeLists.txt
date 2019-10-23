@@ -14,6 +14,16 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   geometry_msgs
   message_generation
+  hardware_interface
+  controller_manager
+  control_msgs
+  trajectory_msgs
+  transmission_interface
+  actionlib
+  pluginlib
+  urdf
+  control_toolbox
+  joint_limits_interface
 )
 
 ## System dependencies are found with CMake's conventions
@@ -106,11 +116,29 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES crowdbotsim
-#  CATKIN_DEPENDS rospy
+ INCLUDE_DIRS 
+  include
+ LIBRARIES 
+  crowdbotsim
+ CATKIN_DEPENDS
+  message_runtime
+  rospy
+  roscpp
+  std_msgs
+  sensor_msgs
+  geometry_msgs
+  message_generation
+  hardware_interface
+  controller_manager
+  control_msgs
+  trajectory_msgs
+  transmission_interface
+  actionlib
+  pluginlib
+  urdf
+  control_toolbox
+  joint_limits_interface
 #  DEPENDS system_lib
-CATKIN_DEPENDS message_runtime
 )
 
 ###########
@@ -120,7 +148,7 @@ CATKIN_DEPENDS message_runtime
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include/
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -128,6 +156,8 @@ include_directories(
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/crowdbotsim.cpp
 # )
+add_library(DiffDrive_hardware_interface src/DiffDrive_hardware_interface.cpp)
+add_library(DiffDrivecpp src/DiffDrive.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -137,7 +167,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/crowdbotsim_node.cpp)
+add_executable(DiffDrive_hw src/DiffDrive_hardware_interface_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -147,12 +177,18 @@ include_directories(
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(DiffDrive_hw DiffDrive_hardware_interface)
+add_dependencies(DiffDrive_hw DiffDrivecpp)
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(DiffDrive_hw
+  DiffDrive_hardware_interface
+  DiffDrivecpp
+  ${catkin_LIBRARIES}
+)
+target_link_libraries(DiffDrive_hardware_interface
+  DiffDrivecpp
+	${catkin_LIBRARIES})
 
 #############
 ## Install ##

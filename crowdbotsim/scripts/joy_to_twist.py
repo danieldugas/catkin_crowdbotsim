@@ -17,8 +17,8 @@ joy_to_twist_pub = rospy.Publisher(topic, Twist, queue_size = 1)
 msg = Twist()
 
 def on_joy(joy):
-    msg.linear.x = joy.axes[1]
-    msg.angular.z = -joy.axes[0]*180/3.141592
+    msg.linear.x = -joy.axes[0]*1.0
+    msg.angular.z = joy.axes[1]*180/3.141592*1.5
     joy_to_twist_pub.publish(msg)
 
 def joy_to_twist():

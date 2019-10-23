@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="Wheelchair">
+  <material name="Rubber - Hard">
+    <color rgba="0.7569 0.7412 0.7412 1" />
+  </material>
+  <material name="Generic">
+    <color rgba="0.2863 0.2863 0.2863 1" />
+  </material>
+  <material name="Opaque(42,42,42)">
+    <color rgba="0.1647 0.1647 0.1647 1" />
+  </material>
+  <link name="base_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.122821 -0.000804 0.489991" />
+      <mass value="1" />
+      <inertia ixx="0.125650301575661" ixy="5.18450651725288E-05" ixz="0.0518959797918797" iyy="0.160478353500366" iyz="-0.000325856613926589" izz="0.0711619108915329" />
+    </inertial>
+    <visual>
+      <origin xyz="0 -0.2715 0.1662" />
+      <geometry>
+        <mesh filename="package://meshes/ChairMasterShare v1 (1).stl" scale="1 1 1" />
+      </geometry>
+      <material name="Rubber - Hard" />
+    </visual>
+    <collision>
+      <origin xyz="0 -0.2715 0.1662" />
+      <geometry>
+        <mesh filename="package://meshes/ChairMasterShare v1 (1).stl" scale="1 1 1" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="caster_front_left">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="5" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://meshes/CasterWheelMountFrontLeft:1.stl" scale="1 1 1" />
+      </geometry>
+      <material name="Generic" />
+    </visual>
+  </link>
+  <link name="wheel_f_l">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="25" />
+      <inertia ixx="0.0672400444746017" ixy="0" ixz="0" iyy="0.0672400444746017" iyz="0" izz="0.0672400444746017" />
+    </inertial>
+    <visual>
+      <origin xyz="0.0001 0 -0.07138" />
+      <geometry>
+        <mesh filename="package://meshes/wheelSmall v2(Mirror) (1)(Mirror).stl" scale="1 1 1" />
+      </geometry>
+      <material name="Opaque(42,42,42)" />
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.5" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="caster_front_right">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="5" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://meshes/CasterWheelMountFrontLeft:1.stl" scale="1 1 1" />
+      </geometry>
+      <material name="Generic" />
+    </visual>
+  </link>
+  <link name="wheel_f_r">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="25" />
+      <inertia ixx="0.0672400444746017" ixy="0" ixz="0" iyy="0.0672400444746017" iyz="0" izz="0.0672400444746017" />
+    </inertial>
+    <visual>
+      <origin xyz="0.0001 0 -0.07138" />
+      <geometry>
+        <mesh filename="package://meshes/wheelSmall v2(Mirror) (1)(Mirror).stl" scale="1 1 1" />
+      </geometry>
+      <material name="Opaque(42,42,42)" />
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.5" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="caster_back_left">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="5" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://meshes/CasterWheelMountFrontLeft:1.stl" scale="1 1 1" />
+      </geometry>
+      <material name="Generic" />
+    </visual>
+  </link>
+  <link name="wheel_b_l">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="25" />
+      <inertia ixx="0.0672400444746017" ixy="0" ixz="0" iyy="0.0672400444746017" iyz="0" izz="0.0672400444746017" />
+    </inertial>
+    <visual>
+      <origin xyz="0.0001 0 -0.07138" />
+      <geometry>
+        <mesh filename="package://meshes/wheelSmall v2(Mirror) (1)(Mirror).stl" scale="1 1 1" />
+      </geometry>
+      <material name="Opaque(42,42,42)" />
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.5" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="caster_back_right">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="5" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://meshes/CasterWheelMountFrontLeft:1.stl" scale="1 1 1" />
+      </geometry>
+      <material name="Generic" />
+    </visual>
+  </link>
+  <link name="wheel_b_r">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="25" />
+      <inertia ixx="0.0672400444746017" ixy="0" ixz="0" iyy="0.0672400444746017" iyz="0" izz="0.0672400444746017" />
+    </inertial>
+    <visual>
+      <origin xyz="0.0001 0 -0.07138" />
+      <geometry>
+        <mesh filename="package://meshes/wheelSmall v2(Mirror) (1)(Mirror).stl" scale="1 1 1" />
+      </geometry>
+      <material name="Opaque(42,42,42)" />
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.5" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="left_wheel">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="25" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://meshes/wheelSeperate v1 1.stl" scale="1 1 1" />
+      </geometry>
+      <material name="Opaque(42,42,42)" />
+    </visual>
+    <collision>
+      <geometry>
+
+        <sphere radius="0.5" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="right_wheel">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="25" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="package://meshes/wheelSeperate v1.stl" scale="1 1 1" />
+      </geometry>
+      <material name="Opaque(42,42,42)" />
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.5" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="FrontLidar">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="1" />
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+    </inertial>
+  </link>
+  <joint name="base_link_caster_front_left_joint" type="continuous">
+    <origin rpy="0 0 -0.93774" xyz="0.35128 0.26234 0.1662" />
+    <parent link="base_link" />
+    <child link="caster_front_left" />
+    <axis xyz="0 0 1" />
+    <dynamics damping="0.25" />
+  </joint>
+  <joint name="caster_front_left_wheel_f_l_joint" type="continuous">
+    <origin xyz="-0.06238 0.002859 -0.08262" />
+    <parent link="caster_front_left" />
+    <child link="wheel_f_l" />
+    <axis xyz="0 -1 0" />
+  </joint>
+  <joint name="base_link_caster_front_right_joint" type="continuous">
+    <origin rpy="0 0 -0.93774" xyz="0.35128 -0.26234 0.1662" />
+    <parent link="base_link" />
+    <child link="caster_front_right" />
+    <axis xyz="0 0 1" />
+    <dynamics damping="0.25" />
+  </joint>
+  <joint name="caster_front_right_wheel_f_r_joint" type="continuous">
+    <origin xyz="-0.06238 0.002859 -0.08262" />
+    <parent link="caster_front_right" />
+    <child link="wheel_f_r" />
+    <axis xyz="0 -1 0" />
+  </joint>
+  <joint name="base_link_caster_back_left_joint" type="continuous">
+    <origin rpy="0 0 -0.93774" xyz="-0.4081 0.2104 0.1662" />
+    <parent link="base_link" />
+    <child link="caster_back_left" />
+    <axis xyz="0 0 1" />
+    <dynamics damping="0.25" />
+  </joint>
+  <joint name="caster_back_left_wheel_b_l_joint" type="continuous">
+    <origin xyz="-0.06238 0.002859 -0.08262" />
+    <parent link="caster_back_left" />
+    <child link="wheel_b_l" />
+    <axis xyz="0 -1 0" />
+  </joint>
+  <joint name="base_link_caster_back_right_joint" type="continuous">
+    <origin rpy="0 0 -0.93774" xyz="-0.4081 -0.2104 0.1662" />
+    <parent link="base_link" />
+    <child link="caster_back_right" />
+    <axis xyz="0 0 1" />
+    <dynamics damping="0.25" />
+  </joint>
+  <joint name="caster_back_right_wheel_b_r_joint" type="continuous">
+    <origin xyz="-0.06238 0.002859 -0.08262" />
+    <parent link="caster_back_right" />
+    <child link="wheel_b_r" />
+    <axis xyz="0 -1 0" />
+  </joint>
+  <joint name="base_link_left_wheel_joint" type="continuous">
+    <origin xyz="0 0.2715 0.1662" />
+    <parent link="base_link" />
+    <child link="left_wheel" />
+    <axis xyz="0 -1 0" />
+  </joint>
+  <joint name="base_link_right_wheel_joint" type="continuous">
+    <origin xyz="0 -0.2715 0.1662" />
+    <parent link="base_link" />
+    <child link="right_wheel" />
+    <axis xyz="0 -1 0" />
+  </joint>
+  <joint name="base_link_FrontLidar_joint" type="fixed">
+    <origin xyz="0.484 0 0.149" />
+    <parent link="base_link" />
+    <child link="FrontLidar" />
+  </joint>
+</robot>
