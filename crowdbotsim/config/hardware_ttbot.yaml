@@ -4,9 +4,9 @@ hardware_ttbot:
     - base_link_left_wheel_link_joint
     - base_link_right_wheel_link_joint
   diff_drive_pid:
-    P: 0.45
-    I: 10.0
+    P: 0.4
+    I: 150.0
     D: 0.0
     spacing: 0.3
     radius: 0.0237
-    max_velocity: 500
+    max_velocity: 600
