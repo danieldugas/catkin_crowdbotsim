@@ -24,8 +24,8 @@ limitations under the License.
 		<param name="port" value="9090"/>
 	</include>
 
-	<include file="$(find crowdbotsim)/launch/joint_state_subscriber.launch"> 
-		<param robot="$(arg robot)"/>
-	</include>
+	<!-- <include file="$(find crowdbotsim)/launch/joint_state_subscriber.launch">  -->
+		<!-- <param robot="$(arg robot)"/> -->
+	<!-- </include> -->
 
 </launch>
