@@ -1,17 +1,27 @@
 {
-  "configurations": [
-    {
-      "browse": {
-        "databaseFilename": "",
-        "limitSymbolsToIncludedHeaders": true
-      },
-      "includePath": [
-        "/home/fabien/git/cb_catkin/devel/include",
-        "/home/fabien/git/virtual-real-pepper/catkin_ws/devel/include",
-        "/opt/ros/kinetic/include",
-        "/usr/include"
-      ],
-      "name": "Linux"
-    }
-  ]
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/fabien/git/cb_catkin/devel/include/**",
+                "/home/fabien/git/virtual-real-pepper/catkin_ws/devel/include/**",
+                "/opt/ros/kinetic/include/**",
+                "/home/fabien/git/cb_catkin/src/crowdbotsim/include/**",
+                "/home/fabien/git/virtual-real-pepper/catkin_ws/src/darknet_ros/darknet_ros/include/**",
+                "/home/fabien/Documents/Demo_pepper/catkin_ws/src/nao_extras/nao_teleop/include/**",
+                "/home/fabien/Documents/Demo_pepper/catkin_ws/src/pepper_obs_avoid/include/**",
+                "/home/fabien/git/virtual-real-pepper/catkin_ws/src/vr_msgs/include/**",
+                "/usr/include/**"
+            ],
+            "name": "ROS",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
 }

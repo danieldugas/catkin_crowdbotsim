@@ -18,7 +18,7 @@ limitations under the License.
 
 	<param name ="/use_sim_time" value="true"/>
 
-	<node pkg="crowdbotsim" type="clock_publisher.py" name="clock_publisher" args="0.02 0.02"/>
+	<node pkg="crowdbotsim" type="clock_publisher.py" name="clock_publisher" args="0.1 0.1"/>
 
 	<include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch">
 		<param name="port" value="9090"/>

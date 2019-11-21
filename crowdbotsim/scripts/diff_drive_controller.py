@@ -6,6 +6,7 @@ import numpy as np
 from std_msgs.msg import Float64
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
+from sensor_msgs.msg import Joy
 
 myargv = rospy.myargv(argv=sys.argv)
 script, robot_ns = myargv
@@ -21,6 +22,14 @@ Wl = 0  # left motor vel input
 # controller variables
 sum_eps = np.array([0.0,0.0]) #[V,W]
 last_eps = np.array([0.0,0.0]) #[V,W]
+reset_sum_eps = False
+last_joy_timestamp = 0
+
+
+def on_joy(joy):
+    global reset_sum_eps, last_joy_timestamp
+    reset_sum_eps = False
+    last_joy_timestamp = rospy.get_time()
 
 def odom_callback(odom):
     global V, W
@@ -53,8 +62,12 @@ def reshape_input(toshape, scale, max, min):
 
 def PID_controller(eps, P, I, D, Te):
     global sum_eps, last_eps
-    eps[1] = eps[1]/10
+    eps[1] = eps[1]/4
     sum_eps += eps
+
+    #reset the sum if no input
+    if rospy.get_time() > (last_joy_timestamp + 1):
+        sum_eps = 0
 
     Ki = 0
     if not I == 0:
@@ -72,6 +85,7 @@ def diff_drive_controller():
     ### Set up subscribers
     odom_sub = rospy.Subscriber('odom', Odometry, odom_callback)
     cmd_vel_sub = rospy.Subscriber('cmd_vel', Twist, cmd_vel_callback)
+    joy_sub = rospy.Subscriber('joy', Joy, on_joy)
 
     ### Set up publishers
     left_wheel_pub = rospy.Publisher('left_motor', Float64, queue_size = 1)

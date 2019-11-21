@@ -3,7 +3,6 @@
         "/home/fabien/git/cb_catkin/devel/lib/python2.7/dist-packages",
         "/home/fabien/git/virtual-real-pepper/catkin_ws/devel/lib/python2.7/dist-packages",
         "/home/fabien/git/catkin_ws/devel/lib/python2.7/dist-packages",
-        "/opt/ros/kinetic/lib/python2.7/dist-packages",
-        "/home/fabien/NaoqiSDK/pynaoqi-python2.7-2.4.3.28-linux64"
+        "/opt/ros/kinetic/lib/python2.7/dist-packages"
     ]
 }

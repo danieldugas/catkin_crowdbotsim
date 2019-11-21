@@ -33,7 +33,7 @@ def joy_to_twist():
 
 	while not rospy.is_shutdown():
             #### Publish msg
-            rospy.loginfo(msg)
+        #     rospy.loginfo(msg)
             rate.sleep()
 
 
