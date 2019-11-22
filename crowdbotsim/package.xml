@@ -54,16 +54,8 @@
   <exec_depend>rospy</exec_depend>
 
 
-  <depend>hardware_interface</depend>
-  <depend>controller_manager</depend>
-  <depend>control_msgs</depend>
   <depend>trajectory_msgs</depend>
-  <depend>actionlib</depend>
-  <depend>pluginlib</depend>
-  <depend>transmission_interface</depend>
   <depend>urdf</depend>
-  <depend>control_toolbox</depend>
-  <depend>joint_limits_interface</depend>
   <depend>std_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>geometry_msgs</depend>

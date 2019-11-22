@@ -14,16 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   geometry_msgs
   message_generation
-  hardware_interface
-  controller_manager
-  control_msgs
-  trajectory_msgs
-  transmission_interface
-  actionlib
-  pluginlib
   urdf
-  control_toolbox
-  joint_limits_interface
 )
 
 ## System dependencies are found with CMake's conventions
@@ -128,16 +119,7 @@ catkin_package(
   sensor_msgs
   geometry_msgs
   message_generation
-  hardware_interface
-  controller_manager
-  control_msgs
-  trajectory_msgs
-  transmission_interface
-  actionlib
-  pluginlib
   urdf
-  control_toolbox
-  joint_limits_interface
 #  DEPENDS system_lib
 )
 
@@ -156,8 +138,8 @@ include_directories(
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/crowdbotsim.cpp
 # )
-add_library(DiffDrive_hardware_interface src/DiffDrive_hardware_interface.cpp)
-add_library(DiffDrivecpp src/DiffDrive.cpp)
+#add_library(DiffDrive_hardware_interface src/DiffDrive_hardware_interface.cpp)
+#add_library(DiffDrivecpp src/DiffDrive.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -167,7 +149,7 @@ add_library(DiffDrivecpp src/DiffDrive.cpp)
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(DiffDrive_hw src/DiffDrive_hardware_interface_node.cpp)
+#add_executable(DiffDrive_hw src/DiffDrive_hardware_interface_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -177,18 +159,18 @@ add_executable(DiffDrive_hw src/DiffDrive_hardware_interface_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-add_dependencies(DiffDrive_hw DiffDrive_hardware_interface)
-add_dependencies(DiffDrive_hw DiffDrivecpp)
+#add_dependencies(DiffDrive_hw DiffDrive_hardware_interface)
+#add_dependencies(DiffDrive_hw DiffDrivecpp)
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(DiffDrive_hw
-  DiffDrive_hardware_interface
-  DiffDrivecpp
-  ${catkin_LIBRARIES}
-)
-target_link_libraries(DiffDrive_hardware_interface
-  DiffDrivecpp
-	${catkin_LIBRARIES})
+#target_link_libraries(DiffDrive_hw
+#  DiffDrive_hardware_interface
+#  DiffDrivecpp
+#  ${catkin_LIBRARIES}
+#)
+#target_link_libraries(DiffDrive_hardware_interface
+#  DiffDrivecpp
+#	${catkin_LIBRARIES})
 
 #############
 ## Install ##
