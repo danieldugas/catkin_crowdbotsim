@@ -1,0 +1,8 @@
+<launch>
+  <arg name="robot" default="turtlebot"/>
+  <arg name="model" default="$(find crowdbotsim)/urdf/$(arg robot).urdf"/>
+  
+  <param name="robot_description" textfile="$(arg model)" />
+  <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher"/>
+  <node pkg="crowdbotsim" type="broadcast_odom.py" name="odom_sub"/>
+</launch>

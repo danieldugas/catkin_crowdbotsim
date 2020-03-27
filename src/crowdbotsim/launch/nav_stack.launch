@@ -1,0 +1,11 @@
+<launch>
+    
+    <arg name="hardware_ns" default="hardware_ttbot"/>
+    <arg name="joy_factor_lin" default="0.45"/>
+    <arg name="joy_factor_ang" default="3.141592"/>
+    <rosparam file="$(find crowdbotsim)/config/$(arg hardware_ns).yaml" command="load"/>
+
+    <node name="diff_drive_controller" pkg="crowdbotsim" type="diff_drive_controller.py" output="screen" args="$(arg hardware_ns)"/>
+    <node name="joy_to_twist_node" pkg="crowdbotsim" type="joy_to_twist.py" output="screen" args="$(arg joy_factor_lin) $(arg joy_factor_ang) 10 /cmd_vel"/>
+
+</launch>
