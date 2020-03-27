@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-  <arg name="model" default="$(find crowdbotsim)/JulietteY20MP_crowdbotsim1.urdf"/>
-  <param name="robot_description" textfile="$(arg model)" />
-	<node name="file_server" pkg="file_server" type="file_server" output="screen"/>
-</launch>
