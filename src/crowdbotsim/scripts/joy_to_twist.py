@@ -11,7 +11,7 @@ factor_lin = float(factor_lin)
 factor_rot = float(factor_rot)
 
 # initialize node
-rospy.init_node('joy_to_twist', anonymous = True)
+rospy.init_node('joy_to_twist')
 
 
 #### Setup joy_to_twist Publisher 
@@ -20,7 +20,7 @@ joy_to_twist_pub = rospy.Publisher(topic, Twist, queue_size = 1)
 msg = Twist()
 
 def on_joy(joy):
-    msg.linear.x = -joy.axes[0]*factor_lin
+    msg.linear.x = joy.axes[0]*factor_lin
     msg.angular.z = joy.axes[1]*180/3.141592*factor_rot
     joy_to_twist_pub.publish(msg)
 
