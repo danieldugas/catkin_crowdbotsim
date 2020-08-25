@@ -7,7 +7,7 @@
             },
             "includePath": [
                 "/home/fabien/git/CrowdBotUnity/catkin_crowdbotsim/devel/include",
-                "/opt/ros/melodic/include",
+                "/opt/ros/noetic/include",
                 "/home/fabien/git/CrowdBotUnity/catkin_crowdbotsim/src/crowdbotsim/include",
                 "/usr/include"
             ],

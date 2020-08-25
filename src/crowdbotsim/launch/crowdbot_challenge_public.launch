@@ -1,0 +1,17 @@
+﻿<!--
+-->
+
+<launch>
+    <arg name="HOST" default="127.0.0.1"/> <!-- IP of computer running simulation, localhost is default -->
+    <arg name="PORT" default="25001"/> <!-- Port used by simulation -->
+    <arg name="delta_time" default="0.05"/> <!-- time between two steps of the simulation -->
+    <arg name="sleep_time" default="-1"/> <!-- forcing waiting time, default -1 is real time -->
+    <arg name="scenarios_size" default="3"/> <!-- number of scenarios to run -->
+    <arg name="min_x" default="-20"/> <!-- ending condition when robot reach min_x -->
+    <arg name="max_time" default="10"/> <!-- ending condition in time -->
+
+	<param name ="/use_sim_time" value="true"/>
+
+	<node pkg="crowdbotsim" type="crowdbot_challenge.py" name="crowdbot_challenge_bridge" 
+	args="$(arg HOST) $(arg PORT) $(arg delta_time) $(arg sleep_time) $(arg scenarios_size) $(arg min_x) $(arg max_time)"/>
+</launch>
