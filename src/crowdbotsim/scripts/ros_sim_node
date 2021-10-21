@@ -141,7 +141,7 @@ class ROSSimNode(object):
 
         # Publishers
         self.goal_pub = rospy.Publisher("/move_base_simple/goal", PoseStamped, queue_size=1)
-        self.obstacles_pub = rospy.Publisher("/sim/obstacles", ObstacleArrayMsg, queue_size=1)
+        self.detected_persons_pub = rospy.Publisher("/robot/dynamic_obstacles", ObstacleArrayMsg, queue_size=1)
         self.goal_reached_pub = rospy.Publisher("/sim/goal_reached", Header, queue_size=1)
         self.clock_pub = rospy.Publisher("/clock", Clock, queue_size=1)
         self.odom_pub = rospy.Publisher("/robot/odom", Odometry, queue_size=1)
@@ -276,15 +276,6 @@ class ROSSimNode(object):
         # simulate LiDAR
         if self.publish_lidar:
             self.raytrace_lidar(odom[:3], self.last_walls, crowd, crowd_vel)
-            msg = LaserScan()
-            msg.ranges = self.lidar_scan
-            msg.angle_min = kLidarMergedMinAngle
-            msg.angle_max = kLidarMergedMaxAngle
-            msg.angle_increment = kLidarAngleIncrement
-            msg.range_max = kLidarMaxRange
-            msg.header.stamp = rospy.Time(sim_time)
-            msg.header.frame_id = LIDAR_FRAME
-            self.lidar_pub.publish(msg)
 
         # -- CHECKING FOR ERRORS --
         goal_is_reached = False
@@ -334,9 +325,10 @@ class ROSSimNode(object):
         publish_clock(self.clock_pub, sim_time)
         publish_tf(self.tf_br, sim_time, odom[:3], robot_in_spd)
         publish_odom(self.odom_pub, robot_in_spd, robotvel_in_baselink, sim_time)
-        publish_obstacles(self.obstacles_pub, sim_time, crowd, crowd_odom, AGENT_RADIUS)
+        publish_detected_persons(self.detected_persons_pub, sim_time, crowd, crowd_odom, self.visible_agents)
         publish_map(self.map_pub, self.last_map, sim_time)
         publish_image(self.image_pub, sim_time, arrimg, self.cv_bridge)
+        publish_lidar(self.lidar_pub, sim_time, self.lidar_scan)
         if goal_is_reached:
             publish_goal_reached(self.goal_reached_pub, sim_time)
             if self.end_on_goal_reached:
@@ -421,6 +413,24 @@ class ROSSimNode(object):
                              kLidarNAngles) + lidar_pos[2]
         if contours is not None:
             render_contours_in_lidar(ranges, angles, flat_contours, lidar_pos[:2])
+        # which agents are visible in lidar
+        visible_agents = None
+        if crowd is not None:
+            visible_agents = np.zeros((len(crowd),))
+            for i, (a_id, a_x, a_y, a_th) in enumerate(crowd):
+                agent_in_sim = np.array([a_x, a_y, a_th])
+                sim_in_lidar = inverse_pose2d(lidar_pos)
+                agent_in_lidar_frame = apply_tf_to_pose(agent_in_sim, sim_in_lidar)
+                x, y, th = agent_in_lidar_frame
+                angle = np.arctan2(y, x)
+                rayidx = int(np.clip(
+                    (((angle - kLidarMergedMinAngle)
+                     % (kLidarMergedMaxAngle - kLidarMergedMinAngle))
+                     / kLidarAngleIncrement)
+                    , 0, kLidarNAngles-1))
+                dist = np.sqrt(x*x + y*y)
+                if dist <= ranges[rayidx]:
+                    visible_agents[i] = 1
         # agents
         if crowd is not None:
             other_agents = []
@@ -441,6 +451,7 @@ class ROSSimNode(object):
         # output
         self.lidar_scan = ranges
         self.lidar_angles = angles
+        self.visible_agents = visible_agents
 
     def check_wall_collisions(self, odom, walls):
         if len(walls) == 0:
@@ -546,13 +557,16 @@ def publish_map(pub, map_, time):
     msg = map_.numpy_to_occupancy_grid_msg(map_.occupancy(), SIM_FRAME, rospy.Time(time))
     pub.publish(msg)
 
-def publish_obstacles(pub, time, crowd, crowd_odom, agent_radius):
+def publish_detected_persons(pub, time, crowd, crowd_odom, visible_agents):
+    agent_radius = AGENT_RADIUS
     if crowd is None or crowd_odom is None:
         return
     obstacles_msg = ObstacleArrayMsg()
     obstacles_msg.header.stamp = rospy.Time(time)
     obstacles_msg.header.frame_id = SIM_FRAME
-    for (id_, _, _, _), (x, y, th, vx, vy, vth) in zip(crowd, crowd_odom):
+    for (id_, _, _, _), (x, y, th, vx, vy, vth), is_vis in zip(crowd, crowd_odom, visible_agents):
+        if not is_vis:
+            continue
         # Add point obstacle
         obst = ObstacleMsg()
         obst.id = id_
@@ -572,6 +586,44 @@ def publish_obstacles(pub, time, crowd, crowd_odom, agent_radius):
         obst.velocities.twist.angular.z = vth
         obstacles_msg.obstacles.append(obst)
     pub.publish(obstacles_msg)
+
+    try:
+        from frame_msgs.msg import TrackedPersons, TrackedPerson
+        pub2 = rospy.Publisher("/robot/tracked_persons", TrackedPersons, queue_size=1)
+        tracked_persons = TrackedPersons()
+        tracked_persons.header.frame_id = SIM_FRAME
+        tracked_persons.header.stamp = rospy.Time(time)
+        for (id_, _, _, _), (x, y, th, vx, vy, vth), is_vis in zip(crowd, crowd_odom, visible_agents):
+            if not is_vis:
+                continue
+            tp = TrackedPerson()
+            tp.track_id = id_
+            quaternion = quaternion_from_euler(0, 0, th)
+            tp.pose.pose.orientation.x = quaternion[0]
+            tp.pose.pose.orientation.y = quaternion[1]
+            tp.pose.pose.orientation.z = quaternion[2]
+            tp.pose.pose.orientation.w = quaternion[3]
+            tp.pose.pose.position.x = x
+            tp.pose.pose.position.y = y
+            tp.twist.twist.linear.x = vx
+            tp.twist.twist.linear.y = vy
+            tracked_persons.tracks.append(tp)
+        pub2.publish(tracked_persons)
+    except: # noqa
+        pass
+
+def publish_lidar(pub, time, ranges):
+    if ranges is None:
+        return
+    msg = LaserScan()
+    msg.ranges = ranges
+    msg.angle_min = kLidarMergedMinAngle
+    msg.angle_max = kLidarMergedMaxAngle
+    msg.angle_increment = kLidarAngleIncrement
+    msg.range_max = kLidarMaxRange
+    msg.header.frame_id = LIDAR_FRAME
+    msg.header.stamp = rospy.Time(time)
+    pub.publish(msg)
 
 def publish_image(pub, time, image, cv_bridge):
     if image is None:
