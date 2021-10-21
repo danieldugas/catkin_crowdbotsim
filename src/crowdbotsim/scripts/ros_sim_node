@@ -14,12 +14,14 @@ from CMap2D import CMap2D
 import subprocess
 from strictfire import StrictFire
 import rospy
+from tf.transformations import quaternion_from_euler
+from cv_bridge import CvBridge
 from sensor_msgs.msg import LaserScan
+from sensor_msgs.msg import Image as ROSImage
 from geometry_msgs.msg import Twist, PoseStamped
 from nav_msgs.msg import Odometry, OccupancyGrid
 from std_msgs.msg import Header
 from rosgraph_msgs.msg import Clock
-from tf.transformations import quaternion_from_euler
 from geometry_msgs.msg import Point32, Quaternion
 from costmap_converter.msg import ObstacleArrayMsg, ObstacleMsg
 
@@ -116,6 +118,7 @@ class ROSSimNode(object):
         self.end_on_goal_reached = end_on_goal_reached
         self.tolerate_image_corruption = True
         # variables
+        self.cv_bridge = CvBridge()
         self.pub = {'clock': 0, 'vel_cmd': (0, 0, 0), 'sim_control': 'i'}
         self.last_action = None
         self.last_odom = None
@@ -143,6 +146,7 @@ class ROSSimNode(object):
         self.clock_pub = rospy.Publisher("/clock", Clock, queue_size=1)
         self.odom_pub = rospy.Publisher("/robot/odom", Odometry, queue_size=1)
         self.map_pub = rospy.Publisher("/sim/map", OccupancyGrid, queue_size=1)
+        self.image_pub = rospy.Publisher("/robot/camera", ROSImage, queue_size=1)
         if self.publish_lidar:
             self.lidar_pub = rospy.Publisher("/robot/laser_scan", LaserScan, queue_size=1)
 
@@ -332,6 +336,7 @@ class ROSSimNode(object):
         publish_odom(self.odom_pub, robot_in_spd, robotvel_in_baselink, sim_time)
         publish_obstacles(self.obstacles_pub, sim_time, crowd, crowd_odom, AGENT_RADIUS)
         publish_map(self.map_pub, self.last_map, sim_time)
+        publish_image(self.image_pub, sim_time, arrimg, self.cv_bridge)
         if goal_is_reached:
             publish_goal_reached(self.goal_reached_pub, sim_time)
             if self.end_on_goal_reached:
@@ -567,6 +572,13 @@ def publish_obstacles(pub, time, crowd, crowd_odom, agent_radius):
         obst.velocities.twist.angular.z = vth
         obstacles_msg.obstacles.append(obst)
     pub.publish(obstacles_msg)
+
+def publish_image(pub, time, image, cv_bridge):
+    if image is None:
+        return
+    msg = cv_bridge.cv2_to_imgmsg(image, encoding="rgb8")
+    pub.publish(msg)
+
 
 def publish_goal_reached(pub, time):
     msg = Header()
