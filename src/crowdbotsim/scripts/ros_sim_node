@@ -1,0 +1,579 @@
+#!/usr/bin/env python
+""" This node serves as an intermediary between unity simulator and ROS nodes
+it subscribes to cmd_vel, and publishes goal, LiDAR, crowd, and odom information """
+import os
+import traceback
+import time
+import numpy as np
+from timeit import default_timer as timer
+from pose2d import apply_tf_to_vel, inverse_pose2d, apply_tf_to_pose
+import base64
+from PIL import Image
+import io
+from CMap2D import CMap2D
+import subprocess
+from strictfire import StrictFire
+import rospy
+from sensor_msgs.msg import LaserScan
+from geometry_msgs.msg import Twist, PoseStamped
+from nav_msgs.msg import Odometry, OccupancyGrid
+from std_msgs.msg import Header
+from rosgraph_msgs.msg import Clock
+from tf.transformations import quaternion_from_euler
+from geometry_msgs.msg import Point32, Quaternion
+from costmap_converter.msg import ObstacleArrayMsg, ObstacleMsg
+
+import helpers
+import socket_handler
+from flowplanningtools import calculate_crowd_velocity
+
+def remove_python2_entries_from_sys_path():
+    """ sourcing ros means adding its python2 paths to sys.path. This creates incompatibilities when
+    importing tf, so we remove them """
+    import sys
+    if sys.version[0] == str(3):
+        new_path = []
+        for p in sys.path:
+            if "python2" in p:
+                print("REMOVING python2 entry from sys.path: {}".format(p))
+                continue
+            new_path.append(p)
+        sys.path = new_path
+
+
+remove_python2_entries_from_sys_path()
+if True:
+    import tf
+
+# camera image size
+_H = 64 # 36 # 120
+_W = 64 # 36 # 160
+
+# LiDAR size
+kLidarAngleIncrement = 0.00581718236208
+kLidarMergedMinAngle = 0
+kLidarMergedMaxAngle = 6.27543783188 + kLidarAngleIncrement
+kLidarMaxRange = 25.
+kLidarNAngles = 1080
+
+FLOWN_OFF_VEL = 5. # m/s
+
+# for now, goal is fixed
+GOAL_XY = np.array([-7, 0])
+GOAL_RADIUS = 0.5
+
+ROBOT_RADIUS = 0.3
+AGENT_RADIUS = 0.33
+
+SIM_FRAME = "/sim_map"
+ODOM_FRAME = "/odom"
+LIDAR_FRAME = "/lidar"
+BASE_FOOTPRINT_FRAME = "/base_footprint"
+BASE_LINK_FRAME = "/base_link"
+
+HOMEDIR = os.path.expanduser("~")
+DEFAULT_UNITY_EXE = os.path.join(HOMEDIR, "Code/CrowdBotChallenge/executables/TrainStation")
+
+def angle_difference(a, b):
+    """ returns smallest angle a - b """
+    delta = a - b
+    delta = (delta + np.pi) % (2.*np.pi) - np.pi
+    return delta
+
+class ROSSimNode(object):
+    def __init__(self, verbose=0,
+                 port=25001,
+                 unity_player_dir=DEFAULT_UNITY_EXE, build_name="./trainstation.x86_64",
+                 add_odom_noise=True,
+                 publish_crowd=True, publish_lidar=True,
+                 wait_for_cmd_vel=False,
+                 end_on_goal_reached=False,
+                 ):
+        """
+        unity_player_dir: if a directory, the node will start the simulator process itself.
+                          if None, the node assumes the process was started externally by the user
+        wait_for_cmd_vel: if True, the simulation is not started until a first cmd_vel ROS message
+                          is received.
+        end_on_goal_reached: if True, the simulation ends when the robot reaches its goal
+        """
+        # ROS
+        rospy.init_node('ros_sim_node')
+        self.tf_br = tf.TransformBroadcaster()
+        self.tf_timeout = rospy.Duration(1.)
+        # constants
+        HOST = '127.0.0.1'
+        self.socket_host = HOST
+        self.build_name = build_name
+        self.socket_port = port
+        self.verbose = verbose
+        self.time_step = 0.2
+        self.unity_player_dir = unity_player_dir
+        self.add_odom_noise = add_odom_noise
+        self.publish_lidar = publish_lidar
+        self.publish_crowd = publish_crowd
+        self.render_legs_in_lidar = True
+        self.wait_for_cmd_vel = wait_for_cmd_vel
+        self.end_on_goal_reached = end_on_goal_reached
+        self.tolerate_image_corruption = True
+        # variables
+        self.pub = {'clock': 0, 'vel_cmd': (0, 0, 0), 'sim_control': 'i'}
+        self.last_action = None
+        self.last_odom = None
+        self.last_crowd = None
+        self.last_walls = None
+        self.last_trialinfo = None
+        self.previous_crowd = None
+        self.unity_process = None
+        self.goal_xy = None
+        self.last_map = None
+        self.last_sdf = None
+        self.distances_travelled_in_base_frame = {}
+        self.flat_contours = None
+        self.converter_cmap2d = None
+        self.lidar_scan = None
+        self.lidar_angles = None
+        self.total_steps = 0
+        self.start_pose = None
+        self.start_pose_drifted = None
+
+        # Publishers
+        self.goal_pub = rospy.Publisher("/move_base_simple/goal", PoseStamped, queue_size=1)
+        self.obstacles_pub = rospy.Publisher("/sim/obstacles", ObstacleArrayMsg, queue_size=1)
+        self.goal_reached_pub = rospy.Publisher("/sim/goal_reached", Header, queue_size=1)
+        self.clock_pub = rospy.Publisher("/clock", Clock, queue_size=1)
+        self.odom_pub = rospy.Publisher("/robot/odom", Odometry, queue_size=1)
+        self.map_pub = rospy.Publisher("/sim/map", OccupancyGrid, queue_size=1)
+        if self.publish_lidar:
+            self.lidar_pub = rospy.Publisher("/robot/laser_scan", LaserScan, queue_size=1)
+
+        self._reboot_unity()
+
+        # callback
+        rospy.Subscriber("/cmd_vel", Twist, self.cmd_vel_callback, queue_size=1)
+        # Timers
+        rospy.Timer(rospy.Duration(self.time_step), self.sim_loop)
+        # let's go.
+        try:
+            rospy.spin()
+        except KeyboardInterrupt:
+            print("Keyboard interrupt - shutting down.")
+            rospy.signal_shutdown('KeyboardInterrupt')
+
+    def _reboot_unity(self):
+        # close unity player and socket
+        if self.unity_process is not None:
+            socket_handler.stop(self.s)
+            self.unity_process.wait()
+        # start unity player and connect
+        if self.unity_player_dir is not None:
+            self.unity_process = subprocess.Popen([self.build_name, "-port", str(self.socket_port)],
+                                                  cwd=self.unity_player_dir,
+                                                  )
+            time.sleep(10.0) # long, but necessary on some machines
+        self.s = socket_handler.init_socket(self.socket_host, self.socket_port)
+
+    def cmd_vel_callback(self, msg):
+        self.last_action = msg
+        self.last_action_stamp = rospy.Time.now()
+
+    def sim_loop(self, event=None):
+        if self.wait_for_cmd_vel:
+            if self.last_action is None:
+                return
+
+        if self.verbose > 1:
+            print("Step: ...")
+        self.total_steps += 1
+        tic = timer()
+
+        # theta>0 in cmd_vel turns right in the simulator, usually it's the opposite.
+        action = (0, 0, 0)
+        if self.last_action is not None:
+            msg = self.last_action
+            action = (msg.linear.x, msg.linear.y, msg.angular.z)
+        self.pub['vel_cmd'] = (action[0], action[1], np.rad2deg(action[2]))
+
+        # making the raw string to send from the dict
+        to_send = helpers.publish_all(self.pub)
+        # sending and receiving raw data
+        raw = socket_handler.send_and_receive(self.s, to_send)
+        # update time in self.pub
+        self.pub = helpers.do_step(self.time_step, self.pub)
+        # getting dict from raw data
+        dico = helpers.raw_data_to_dict(raw)
+
+        # -- DATA EXTRACTION --
+
+        try:
+            self.last_walls = helpers.get_walls(dico)
+        except Exception as e: # noqa
+            print(dico["walls"])
+            traceback.print_exc()
+            self.last_walls = None
+
+        self.last_trialinfo = helpers.get_trialinfo(dico)
+
+        sim_time = self.pub["clock"]
+
+        goal = helpers.get_goal(dico)
+        if goal is not None:
+            self.goal_xy = goal[:2]
+
+        crowd = None
+        crowd_vel = None
+        crowd_odom = None
+        try:
+            crowd = helpers.get_crowd(dico)
+            crowd_odom = self.infer_crowd_velocity(crowd, self.time_step)
+            crowd_vel = crowd_odom[:, 3:]
+            self.last_crowd = crowd
+        except Exception as e: # noqa
+            traceback.print_exc()
+            self.last_crowd = None
+
+        try:
+            odom = helpers.get_odom(dico)
+            if self.last_odom is None:
+                odom[3:6] = 0
+            else:
+                odom[3:6] = (odom[:3] - self.last_odom[:3]) / self.time_step
+                odom[5] = angle_difference(odom[2], self.last_odom[2]) / self.time_step
+            x, y, th, vx, vy, vth, z = odom
+            if self.start_pose is None:
+                self.start_pose = odom[:3]
+                self.start_pose_drifted = odom[:3]
+        except IndexError:
+            traceback.print_exc()
+            print("Warning: odom message is corrupted")
+
+        arrimg = None
+        if "camera" in dico and dico["camera"] != '':
+            jpgbytes = base64.b64decode(dico["camera"])
+            img = Image.open(io.BytesIO(jpgbytes))
+            arrimg = np.asarray(img)
+        if arrimg is None:
+            print(dico)
+            print("Warning: image message is corrupted")
+            if self.tolerate_image_corruption:
+                arrimg = np.zeros((_H, _W, 3), dtype=np.uint8)
+            else:
+                raise IOError("Image message is corrupted")
+
+        # -- POST PROCESSING --
+
+        # add odom noise (random % of covered distance / angle)
+        if self.start_pose_drifted is not None:
+            odom_drift = np.random.normal(size=(3,)) * 0.01 * odom[3:6] * self.time_step
+            self.start_pose_drifted += odom_drift
+            # odom_in_sim, spd_in_sim -> robot_in_spd
+            sim_in_spd = inverse_pose2d(self.start_pose_drifted)
+            robot_in_spd = apply_tf_to_pose(odom[:3], sim_in_spd)
+
+        # simulate LiDAR
+        if self.publish_lidar:
+            self.raytrace_lidar(odom[:3], self.last_walls, crowd, crowd_vel)
+            msg = LaserScan()
+            msg.ranges = self.lidar_scan
+            msg.angle_min = kLidarMergedMinAngle
+            msg.angle_max = kLidarMergedMaxAngle
+            msg.angle_increment = kLidarAngleIncrement
+            msg.range_max = kLidarMaxRange
+            msg.header.stamp = rospy.Time(sim_time)
+            msg.header.frame_id = LIDAR_FRAME
+            self.lidar_pub.publish(msg)
+
+        # -- CHECKING FOR ERRORS --
+        goal_is_reached = False
+        fallen_through_ground = False
+        flown_off = False
+        colliding_object = False
+        colliding_crowd = False
+        progress = 0
+        # goal
+        if self.goal_xy is not None:
+            goal_dist = np.linalg.norm(self.goal_xy - odom[:2])
+            goal_is_reached = (goal_dist < (GOAL_RADIUS + ROBOT_RADIUS))
+            # progress
+            if self.last_odom is not None:
+                last_goal_dist = np.linalg.norm(self.goal_xy - self.last_odom[:2])
+                progress = last_goal_dist - goal_dist
+                if abs(progress) > 10:
+                    flown_off = True
+        self.last_odom = odom
+        # checks
+        if np.linalg.norm(odom[3:5]) >= FLOWN_OFF_VEL:
+            flown_off = True
+        if odom[-1] < 0:
+            fallen_through_ground = True
+        # collision
+        if self.last_walls is not None:
+            colliding_object = self.check_wall_collisions(odom, self.last_walls)
+        # agent distances
+        if crowd is not None:
+            if len(crowd) > 0:
+                mindist = np.min(np.linalg.norm(crowd[:,1:3] - odom[:2][None, :], axis=-1))
+                if mindist < (AGENT_RADIUS + ROBOT_RADIUS):
+                    colliding_crowd = True
+        # robotstate obs
+        # shape (n_agents, 5 [grx, gry, vx, vy, vtheta]) - all in base frame
+        baselink_in_world = odom[:3]
+        world_in_baselink = inverse_pose2d(baselink_in_world)
+        robotvel_in_world = odom[3:6]  # TODO: actual robot rot vel?
+        robotvel_in_baselink = apply_tf_to_vel(robotvel_in_world, world_in_baselink)
+#         goal_in_world = np.array([self.goal_xy[0], self.goal_xy[1], 0])
+#         goal_in_baselink = apply_tf_to_pose(goal_in_world, world_in_baselink)
+        if flown_off or fallen_through_ground or colliding_object or colliding_crowd:
+            print("Uh oh")
+
+        # -- PUBLISH --
+
+        publish_clock(self.clock_pub, sim_time)
+        publish_tf(self.tf_br, sim_time, odom[:3], robot_in_spd)
+        publish_odom(self.odom_pub, robot_in_spd, robotvel_in_baselink, sim_time)
+        publish_obstacles(self.obstacles_pub, sim_time, crowd, crowd_odom, AGENT_RADIUS)
+        publish_map(self.map_pub, self.last_map, sim_time)
+        if goal_is_reached:
+            publish_goal_reached(self.goal_reached_pub, sim_time)
+            if self.end_on_goal_reached:
+                rospy.signal_shutdown("goal reached")
+
+        if self.verbose > 1:
+            toc = timer()
+            print("Step: {} Hz".format(1. / (toc - tic)))
+            print("Clock: {}".format(dico["clock"]))
+
+    def close(self):
+        socket_handler.stop(self.s)
+        if self.unity_process is not None:
+            self.unity_process.wait(timeout=10)
+        time.sleep(1)
+
+    def _infer_crowd_vel(self, crowd, last_crowd):
+        """ infer vx, vy, vtheta for crowd in sim frame """
+        if crowd is None:
+            return None
+        crowd_vel = np.zeros_like(crowd)
+        # for each human, get vel in base frame
+        crowd_vel[:, 0] = crowd[:, 0] # ids
+        # dig up rotational velocity from past states log
+        if last_crowd is None:
+            crowd_vel[:, 1] = 0 # vx
+            crowd_vel[:, 2] = 0 # vy
+            crowd_vel[:, 3] = 0 # vth
+        else:
+            # paranoid check that ids are matching
+            for (id_, x, y, th), (last_id, last_x, last_y, last_th) in zip(crowd, last_crowd):
+                if id_ != last_id:
+                    print("Warning: changing crowd ids are not supported.")
+            crowd_vel[:, 1] = (crowd[:, 1] - last_crowd[:, 1]) / self._get_dt() # vx
+            crowd_vel[:, 2] = (crowd[:, 2] - last_crowd[:, 2]) / self._get_dt() # vy
+            crowd_vel[:, 3] = (crowd[:, 3] - last_crowd[:, 3]) / self._get_dt() # vth
+        return crowd_vel
+
+    def infer_crowd_velocity(self, crowd, dt):
+        if self.previous_crowd is None:
+            self.previous_crowd = crowd
+        crowd_odom = calculate_crowd_velocity(crowd, self.previous_crowd, dt)
+        self.previous_crowd = crowd
+        return crowd_odom
+
+    def _update_dist_travelled(self, crowd, crowd_vel):
+        """ update dist travel var used for animating legs """
+        if crowd is None:
+            return
+        # for each human, get vel in base frame
+        for (id_, x, y, th), (vx, vy, vrot) in zip(crowd, crowd_vel):
+            # transform world vel to base vel
+            baselink_in_world = np.array([x, y, th])
+            world_in_baselink = inverse_pose2d(baselink_in_world)
+            vel_in_world_frame = np.array([vx, vy, vrot])
+            vel_in_baselink_frame = apply_tf_to_vel(vel_in_world_frame, world_in_baselink)
+            if id_ in self.distances_travelled_in_base_frame:
+                self.distances_travelled_in_base_frame[id_] += vel_in_baselink_frame * self.time_step
+            else:
+                self.distances_travelled_in_base_frame[id_] = vel_in_baselink_frame * self.time_step
+
+    def raytrace_lidar(self, robot_xytheta, contours, crowd, crowd_vel):
+        from CMap2D import flatten_contours, render_contours_in_lidar, CMap2D, CSimAgent
+        # inputs
+        x, y, th = robot_xytheta
+        # preprocessing if necessary
+        self._update_dist_travelled(crowd, crowd_vel)
+        if self.flat_contours is None and contours is not None:
+            self.flat_contours = flatten_contours([list(polygon) for polygon in contours])
+        if self.converter_cmap2d is None:
+            self.converter_cmap2d = CMap2D()
+            self.converter_cmap2d.set_resolution(1.)
+        # self inputs
+        flat_contours = self.flat_contours
+        distances_travelled_in_base_frame = self.distances_travelled_in_base_frame
+        converter_cmap2d = self.converter_cmap2d
+        # raytrace
+        lidar_pos = np.array([x, y, th], dtype=np.float32)
+        ranges = np.ones((kLidarNAngles,), dtype=np.float32) * kLidarMaxRange
+        angles = np.linspace(kLidarMergedMinAngle,
+                             kLidarMergedMaxAngle-kLidarAngleIncrement,
+                             kLidarNAngles) + lidar_pos[2]
+        if contours is not None:
+            render_contours_in_lidar(ranges, angles, flat_contours, lidar_pos[:2])
+        # agents
+        if crowd is not None:
+            other_agents = []
+            for (a_id, a_x, a_y, a_th), (a_vx, a_vy, a_vrot) in zip(crowd, crowd_vel):
+                pos = np.array([a_x, a_y, a_th], dtype=np.float32)
+                if a_id in distances_travelled_in_base_frame:
+                    dist = distances_travelled_in_base_frame[a_id].astype(np.float32)
+                else:
+                    raise ValueError("id not found in distances travelled")
+                vel = np.array([a_vx, a_vy], dtype=np.float32)
+                if self.render_legs_in_lidar:
+                    agent = CSimAgent(pos, dist, vel)
+                else:
+                    agent = CSimAgent(pos, dist, vel, type_="trunk", radius=AGENT_RADIUS)
+                other_agents.append(agent)
+            # apply through converter map (res 1., origin 0,0 -> i,j == x,y)
+            converter_cmap2d.render_agents_in_lidar(ranges, angles, other_agents, lidar_pos[:2])
+        # output
+        self.lidar_scan = ranges
+        self.lidar_angles = angles
+
+    def check_wall_collisions(self, odom, walls):
+        if len(walls) == 0:
+            return False
+        if self.last_sdf is None:
+            map_ = CMap2D()
+            map_.from_closed_obst_vertices(walls, resolution=0.1)
+            self.last_map = map_
+            self.last_sdf = map_.as_sdf()
+        ij = self.last_map.xy_to_ij(odom[:2][None, :], clip_if_outside=True)[0]
+        return self.last_sdf[ij[0], ij[1]] < ROBOT_RADIUS
+
+    def infer_current_scenario(self):
+        if self.last_trialinfo is None:
+            return -1
+        try:
+            name, ext = os.path.splitext(os.path.basename(self.last_trialinfo))
+            number = name[-2:]
+            return int(number)
+        except: # noqa
+            print(self.last_trialinfo)
+            traceback.print_exc()
+        return -1
+
+def check_running_unity_backends():
+    from builtins import input
+    if os.system('pgrep build.x86') == 0:
+        print("Processes detected which might be unity players:")
+        os.system('ps aux | grep build.x86') # display port numbers
+        input("Are you sure you want to continue? (Ctrl-c: stop, Enter: continue)")
+
+def publish_clock(pub, time):
+    msg = Clock()
+    msg.clock = rospy.Time(time)
+    pub.publish(msg)
+
+def publish_tf(pub, time, robot_in_sim, robot_in_spd):
+    sim_in_robot = inverse_pose2d(robot_in_sim)
+    x, y, th = sim_in_robot
+    pub.sendTransform(
+        (x, y, 0),
+        quaternion_from_euler(0, 0, th),
+        rospy.Time(time),
+        SIM_FRAME,
+        BASE_LINK_FRAME,
+    )
+    pub.sendTransform(
+        (0, 0, 0),
+        quaternion_from_euler(0, 0, 0),
+        rospy.Time(time),
+        BASE_FOOTPRINT_FRAME,
+        BASE_LINK_FRAME,
+    )
+    pub.sendTransform(
+        (0, 0, 0.2),
+        quaternion_from_euler(0, 0, 0),
+        rospy.Time(time),
+        LIDAR_FRAME,
+        BASE_LINK_FRAME,
+    )
+    x, y, th = robot_in_spd
+    pub.sendTransform(
+        (x, y, 0),
+        quaternion_from_euler(0, 0, th),
+        rospy.Time(time),
+        BASE_LINK_FRAME,
+        ODOM_FRAME,
+    )
+
+def publish_odom(pub, pos_in_odom_frame, vel_in_base_frame, time):
+    msg = Odometry()
+    msg.header.stamp = rospy.Time(time)
+    msg.header.frame_id = ODOM_FRAME
+    msg.child_frame_id = BASE_FOOTPRINT_FRAME
+    msg.pose.pose.position.x = pos_in_odom_frame[0]
+    msg.pose.pose.position.y = pos_in_odom_frame[1]
+    msg.pose.pose.position.z = 0
+    msg.pose.pose.orientation = Quaternion(
+        *quaternion_from_euler(0, 0, pos_in_odom_frame[2]))
+    ii_cxy = 0.1   # translational covariance for same-axis [m^2]
+    ii_cth = 0.001 # rotational covariance for same-axis [rad^2]
+    kOdomCovariance = [
+        ii_cxy,      0,      0,      0,      0,      0, # noqa
+             0, ii_cxy,      0,      0,      0,      0, # noqa
+             0,      0,      0,      0,      0,      0, # noqa
+             0,      0,      0,      0,      0,      0, # noqa
+             0,      0,      0,      0,      0,      0, # noqa
+             0,      0,      0,      0,      0, ii_cth, # noqa
+    ]
+    msg.pose.covariance = kOdomCovariance
+    msg.twist.twist.linear.x = vel_in_base_frame[0]
+    msg.twist.twist.linear.y = vel_in_base_frame[1]
+    msg.twist.twist.linear.z = 0
+    msg.twist.twist.angular.x = 0
+    msg.twist.twist.angular.y = 0
+    msg.twist.twist.angular.z = vel_in_base_frame[2]
+    msg.twist.covariance = kOdomCovariance
+    pub.publish(msg)
+
+def publish_map(pub, map_, time):
+    if map_ is None:
+        return
+    msg = map_.numpy_to_occupancy_grid_msg(map_.occupancy(), SIM_FRAME, rospy.Time(time))
+    pub.publish(msg)
+
+def publish_obstacles(pub, time, crowd, crowd_odom, agent_radius):
+    if crowd is None or crowd_odom is None:
+        return
+    obstacles_msg = ObstacleArrayMsg()
+    obstacles_msg.header.stamp = rospy.Time(time)
+    obstacles_msg.header.frame_id = SIM_FRAME
+    for (id_, _, _, _), (x, y, th, vx, vy, vth) in zip(crowd, crowd_odom):
+        # Add point obstacle
+        obst = ObstacleMsg()
+        obst.id = id_
+        obst.polygon.points = [Point32()]
+        obst.polygon.points[0].x = x
+        obst.polygon.points[0].y = y
+        obst.polygon.points[0].z = 0
+        obst.radius = agent_radius
+        yaw = th
+        q = quaternion_from_euler(0,0,yaw)
+        obst.orientation = Quaternion(*q)
+        obst.velocities.twist.linear.x = vx
+        obst.velocities.twist.linear.y = vy
+        obst.velocities.twist.linear.z = 0
+        obst.velocities.twist.angular.x = 0
+        obst.velocities.twist.angular.y = 0
+        obst.velocities.twist.angular.z = vth
+        obstacles_msg.obstacles.append(obst)
+    pub.publish(obstacles_msg)
+
+def publish_goal_reached(pub, time):
+    msg = Header()
+    msg.stamp = rospy.Time(time)
+    pub.publish(msg)
+
+
+if __name__ == "__main__":
+    np.set_printoptions(precision=1, suppress=True)
+    StrictFire(ROSSimNode)
