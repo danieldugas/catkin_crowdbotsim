@@ -74,7 +74,7 @@ BASE_FOOTPRINT_FRAME = "/base_footprint"
 BASE_LINK_FRAME = "/base_link"
 
 HOMEDIR = os.path.expanduser("~")
-DEFAULT_UNITY_EXE = os.path.join(HOMEDIR, "Code/CrowdBotChallenge/executables/TrainStation")
+DEFAULT_UNITY_EXE = os.path.join(HOMEDIR, "Code/CrowdBotChallenge/executables/Linux_ETH_cbc_master")
 
 def angle_difference(a, b):
     """ returns smallest angle a - b """
@@ -141,7 +141,8 @@ class ROSSimNode(object):
 
         # Publishers
         self.goal_pub = rospy.Publisher("/move_base_simple/goal", PoseStamped, queue_size=1)
-        self.detected_persons_pub = rospy.Publisher("/robot/dynamic_obstacles", ObstacleArrayMsg, queue_size=1)
+        self.detected_persons_pub = rospy.Publisher(
+            "/robot/dynamic_obstacles", ObstacleArrayMsg, queue_size=1)
         self.goal_reached_pub = rospy.Publisher("/sim/goal_reached", Header, queue_size=1)
         self.clock_pub = rospy.Publisher("/clock", Clock, queue_size=1)
         self.odom_pub = rospy.Publisher("/robot/odom", Odometry, queue_size=1)
@@ -154,11 +155,15 @@ class ROSSimNode(object):
 
         # callback
         rospy.Subscriber("/cmd_vel", Twist, self.cmd_vel_callback, queue_size=1)
-        # Timers
-        rospy.Timer(rospy.Duration(self.time_step), self.sim_loop)
         # let's go.
         try:
-            rospy.spin()
+            while True:
+                tic = timer()
+                self.sim_loop()
+                toc = timer()
+                elapsed = toc - tic
+                if elapsed < self.time_step:
+                    time.sleep(self.time_step - elapsed)
         except KeyboardInterrupt:
             print("Keyboard interrupt - shutting down.")
             rospy.signal_shutdown('KeyboardInterrupt')
@@ -325,6 +330,7 @@ class ROSSimNode(object):
         publish_clock(self.clock_pub, sim_time)
         publish_tf(self.tf_br, sim_time, odom[:3], robot_in_spd)
         publish_odom(self.odom_pub, robot_in_spd, robotvel_in_baselink, sim_time)
+        publish_goal(self.goal_pub, self.goal_xy, sim_time)
         publish_detected_persons(self.detected_persons_pub, sim_time, crowd, crowd_odom, self.visible_agents)
         publish_map(self.map_pub, self.last_map, sim_time)
         publish_image(self.image_pub, sim_time, arrimg, self.cv_bridge)
@@ -551,6 +557,17 @@ def publish_odom(pub, pos_in_odom_frame, vel_in_base_frame, time):
     msg.twist.covariance = kOdomCovariance
     pub.publish(msg)
 
+def publish_goal(pub, goal_xy, time):
+    if goal_xy is None:
+        return
+    msg = PoseStamped()
+    msg.header.stamp = rospy.Time(time)
+    msg.header.frame_id = SIM_FRAME
+    msg.pose.position.x = goal_xy[0]
+    msg.pose.position.y = goal_xy[1]
+    msg.pose.position.z = 0
+    pub.publish(msg)
+
 def publish_map(pub, map_, time):
     if map_ is None:
         return
@@ -607,6 +624,7 @@ def publish_detected_persons(pub, time, crowd, crowd_odom, visible_agents):
             tp.pose.pose.position.y = y
             tp.twist.twist.linear.x = vx
             tp.twist.twist.linear.y = vy
+            tp.twist.twist.angular.z = vth
             tracked_persons.tracks.append(tp)
         pub2.publish(tracked_persons)
     except: # noqa
