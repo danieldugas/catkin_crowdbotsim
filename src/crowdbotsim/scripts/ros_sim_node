@@ -337,6 +337,7 @@ class ROSSimNode(object):
         publish_lidar(self.lidar_pub, sim_time, self.lidar_scan)
         if goal_is_reached:
             publish_goal_reached(self.goal_reached_pub, sim_time)
+            rospy.loginfo_once("Goal reached")
             if self.end_on_goal_reached:
                 rospy.signal_shutdown("goal reached")
 
