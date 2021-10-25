@@ -25,8 +25,8 @@ from rosgraph_msgs.msg import Clock
 from geometry_msgs.msg import Point32, Quaternion
 from costmap_converter.msg import ObstacleArrayMsg, ObstacleMsg
 
-import helpers
-import socket_handler
+import crowdbotsimcontrol.helpers as helpers
+import crowdbotsimcontrol.socket_handler as socket_handler
 from flowplanningtools import calculate_crowd_velocity
 
 def remove_python2_entries_from_sys_path():
