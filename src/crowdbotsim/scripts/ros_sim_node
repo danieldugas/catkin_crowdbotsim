@@ -90,6 +90,7 @@ class ROSSimNode(object):
                  publish_crowd=True, publish_lidar=True,
                  wait_for_cmd_vel=False,
                  end_on_goal_reached=False,
+                 rosarg_name=None, rosarg_log=None, # passed by roslaunch, but unused
                  ):
         """
         unity_player_dir: if a directory, the node will start the simulator process itself.
@@ -656,7 +657,13 @@ def publish_goal_reached(pub, time):
     msg.stamp = rospy.Time(time)
     pub.publish(msg)
 
+def strip_ROS_walrus_operator_from_args():
+    import sys
+    sys.argv = [arg.replace(":=", "=").replace("__name", "--rosarg_name").replace("__log", "--rosarg_log")
+                for arg in sys.argv]
+
 
 if __name__ == "__main__":
+    strip_ROS_walrus_operator_from_args()
     np.set_printoptions(precision=1, suppress=True)
     StrictFire(ROSSimNode)
