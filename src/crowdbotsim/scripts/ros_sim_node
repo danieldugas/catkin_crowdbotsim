@@ -491,32 +491,32 @@ def check_running_unity_backends():
         os.system('ps aux | grep build.x86') # display port numbers
         input("Are you sure you want to continue? (Ctrl-c: stop, Enter: continue)")
 
-def publish_clock(pub, time):
+def publish_clock(pub, t_sec):
     msg = Clock()
-    msg.clock = rospy.Time(time)
+    msg.clock = rospy.Time(t_sec)
     pub.publish(msg)
 
-def publish_tf(pub, time, robot_in_sim, robot_in_spd):
+def publish_tf(pub, t_sec, robot_in_sim, robot_in_spd):
     sim_in_robot = inverse_pose2d(robot_in_sim)
     x, y, th = sim_in_robot
     pub.sendTransform(
         (x, y, 0),
         quaternion_from_euler(0, 0, th),
-        rospy.Time(time),
+        rospy.Time(t_sec),
         SIM_FRAME,
         BASE_LINK_FRAME,
     )
     pub.sendTransform(
         (0, 0, 0),
         quaternion_from_euler(0, 0, 0),
-        rospy.Time(time),
+        rospy.Time(t_sec),
         BASE_FOOTPRINT_FRAME,
         BASE_LINK_FRAME,
     )
     pub.sendTransform(
         (0, 0, 0.2),
         quaternion_from_euler(0, 0, 0),
-        rospy.Time(time),
+        rospy.Time(t_sec),
         LIDAR_FRAME,
         BASE_LINK_FRAME,
     )
@@ -524,14 +524,14 @@ def publish_tf(pub, time, robot_in_sim, robot_in_spd):
     pub.sendTransform(
         (x, y, 0),
         quaternion_from_euler(0, 0, th),
-        rospy.Time(time),
+        rospy.Time(t_sec),
         BASE_LINK_FRAME,
         ODOM_FRAME,
     )
 
-def publish_odom(pub, pos_in_odom_frame, vel_in_base_frame, time):
+def publish_odom(pub, pos_in_odom_frame, vel_in_base_frame, t_sec):
     msg = Odometry()
-    msg.header.stamp = rospy.Time(time)
+    msg.header.stamp = rospy.Time(t_sec)
     msg.header.frame_id = ODOM_FRAME
     msg.child_frame_id = BASE_FOOTPRINT_FRAME
     msg.pose.pose.position.x = pos_in_odom_frame[0]
@@ -559,29 +559,29 @@ def publish_odom(pub, pos_in_odom_frame, vel_in_base_frame, time):
     msg.twist.covariance = kOdomCovariance
     pub.publish(msg)
 
-def publish_goal(pub, goal_xy, time):
+def publish_goal(pub, goal_xy, t_sec):
     if goal_xy is None:
         return
     msg = PoseStamped()
-    msg.header.stamp = rospy.Time(time)
+    msg.header.stamp = rospy.Time(t_sec)
     msg.header.frame_id = SIM_FRAME
     msg.pose.position.x = goal_xy[0]
     msg.pose.position.y = goal_xy[1]
     msg.pose.position.z = 0
     pub.publish(msg)
 
-def publish_map(pub, map_, time):
+def publish_map(pub, map_, t_sec):
     if map_ is None:
         return
-    msg = map_.numpy_to_occupancy_grid_msg(map_.occupancy(), SIM_FRAME, rospy.Time(time))
+    msg = map_.numpy_to_occupancy_grid_msg(map_.occupancy(), SIM_FRAME, rospy.Time(t_sec))
     pub.publish(msg)
 
-def publish_detected_persons(pub, time, crowd, crowd_odom, visible_agents):
+def publish_detected_persons(pub, t_sec, crowd, crowd_odom, visible_agents):
     agent_radius = AGENT_RADIUS
     if crowd is None or crowd_odom is None:
         return
     obstacles_msg = ObstacleArrayMsg()
-    obstacles_msg.header.stamp = rospy.Time(time)
+    obstacles_msg.header.stamp = rospy.Time(t_sec)
     obstacles_msg.header.frame_id = SIM_FRAME
     for (id_, _, _, _), (x, y, th, vx, vy, vth), is_vis in zip(crowd, crowd_odom, visible_agents):
         if not is_vis:
@@ -611,7 +611,7 @@ def publish_detected_persons(pub, time, crowd, crowd_odom, visible_agents):
         pub2 = rospy.Publisher("/robot/tracked_persons", TrackedPersons, queue_size=1)
         tracked_persons = TrackedPersons()
         tracked_persons.header.frame_id = SIM_FRAME
-        tracked_persons.header.stamp = rospy.Time(time)
+        tracked_persons.header.stamp = rospy.Time(t_sec)
         for (id_, _, _, _), (x, y, th, vx, vy, vth), is_vis in zip(crowd, crowd_odom, visible_agents):
             if not is_vis:
                 continue
@@ -632,7 +632,7 @@ def publish_detected_persons(pub, time, crowd, crowd_odom, visible_agents):
     except: # noqa
         pass
 
-def publish_lidar(pub, time, ranges):
+def publish_lidar(pub, t_sec, ranges):
     if ranges is None:
         return
     msg = LaserScan()
@@ -642,19 +642,19 @@ def publish_lidar(pub, time, ranges):
     msg.angle_increment = kLidarAngleIncrement
     msg.range_max = kLidarMaxRange
     msg.header.frame_id = LIDAR_FRAME
-    msg.header.stamp = rospy.Time(time)
+    msg.header.stamp = rospy.Time(t_sec)
     pub.publish(msg)
 
-def publish_image(pub, time, image, cv_bridge):
+def publish_image(pub, t_sec, image, cv_bridge):
     if image is None:
         return
     msg = cv_bridge.cv2_to_imgmsg(image, encoding="rgb8")
     pub.publish(msg)
 
 
-def publish_goal_reached(pub, time):
+def publish_goal_reached(pub, t_sec):
     msg = Header()
-    msg.stamp = rospy.Time(time)
+    msg.stamp = rospy.Time(t_sec)
     pub.publish(msg)
 
 def strip_ROS_walrus_operator_from_args():
