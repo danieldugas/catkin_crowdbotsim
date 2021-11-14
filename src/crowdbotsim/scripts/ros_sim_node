@@ -67,7 +67,7 @@ GOAL_RADIUS = 0.5
 ROBOT_RADIUS = 0.3
 AGENT_RADIUS = 0.33
 
-SIM_FRAME = "/sim_map"
+SIM_FRAME = "sim_map"
 ODOM_FRAME = "/odom"
 LIDAR_FRAME = "/lidar"
 BASE_FOOTPRINT_FRAME = "/base_footprint"
@@ -568,6 +568,7 @@ def publish_goal(pub, goal_xy, t_sec):
     msg.pose.position.x = goal_xy[0]
     msg.pose.position.y = goal_xy[1]
     msg.pose.position.z = 0
+    msg.pose.orientation.w = 1.
     pub.publish(msg)
 
 def publish_map(pub, map_, t_sec):
