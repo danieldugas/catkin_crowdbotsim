@@ -88,12 +88,12 @@ Visualization Manager:
       Class: rviz/Map
       Color Scheme: map
       Draw Behind: false
-      Enabled: true
+      Enabled: false
       Name: Map
       Topic: /sim/map
       Unreliable: false
       Use Timestamp: false
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -174,11 +174,11 @@ Visualization Manager:
       Render covariances:
         Line width: 0.10000000149011612
         Value: true
-      Render detection IDs: true
+      Render detection IDs: false
       Render history: false
       Render person visual: true
-      Render track IDs: true
-      Render track state: true
+      Render track IDs: false
+      Render track state: false
       Render velocities: true
       Show DELETED tracks: false
       Show MATCHED tracks: true
@@ -194,29 +194,6 @@ Visualization Manager:
       Z offset:
         Use Z position from message: false
         Value: 0
-    - Alpha: 1
-      Buffer Length: 1
-      Class: rviz/Path
-      Color: 25; 255; 0
-      Enabled: true
-      Head Diameter: 0.30000001192092896
-      Head Length: 0.20000000298023224
-      Length: 0.30000001192092896
-      Line Style: Lines
-      Line Width: 0.029999999329447746
-      Name: Path
-      Offset:
-        X: 0
-        Y: 0
-        Z: 0
-      Pose Color: 255; 85; 255
-      Pose Style: None
-      Radius: 0.029999999329447746
-      Shaft Diameter: 0.10000000149011612
-      Shaft Length: 0.10000000149011612
-      Topic: /move_base/TebLocalPlannerROS/local_plan
-      Unreliable: false
-      Value: true
     - Alpha: 0.699999988079071
       Class: rviz/Map
       Color Scheme: map
@@ -260,6 +237,22 @@ Visualization Manager:
       Topic: /move_base/TebLocalPlannerROS/global_plan
       Unreliable: false
       Value: true
+    - Alpha: 1
+      Arrow Length: 0.30000001192092896
+      Axes Length: 0.30000001192092896
+      Axes Radius: 0.009999999776482582
+      Class: rviz/PoseArray
+      Color: 255; 25; 0
+      Enabled: true
+      Head Length: 0.07000000029802322
+      Head Radius: 0.029999999329447746
+      Name: PoseArray
+      Shaft Length: 0.23000000417232513
+      Shaft Radius: 0.009999999776482582
+      Shape: Arrow (Flat)
+      Topic: /move_base/TebLocalPlannerROS/teb_poses
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 231; 231; 231
@@ -288,25 +281,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 34.46942901611328
+      Distance: 30.333097457885742
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 11.039743423461914
-        Y: -1.2676812410354614
-        Z: -1.0272717475891113
+        X: 13.013476371765137
+        Y: -4.588587284088135
+        Z: -2.532552480697632
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.0653985738754272
+      Pitch: 0.8753985166549683
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.4753977060317993
+      Yaw: 0.05040302127599716
     Saved:
       - Angle: 0
         Class: rviz/TopDownOrtho
@@ -361,5 +354,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1267
-  X: 692
-  Y: 20
+  X: 325
+  Y: 59

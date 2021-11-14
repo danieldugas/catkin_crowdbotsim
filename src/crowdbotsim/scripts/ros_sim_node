@@ -574,7 +574,7 @@ def publish_goal(pub, goal_xy, t_sec):
 def publish_map(pub, map_, t_sec):
     if map_ is None:
         return
-    msg = map_.numpy_to_occupancy_grid_msg(map_.occupancy(), SIM_FRAME, rospy.Time(t_sec))
+    msg = map_.numpy_to_occupancy_grid_msg(map_.occupancy() > 0.5, SIM_FRAME, rospy.Time(t_sec))
     pub.publish(msg)
 
 def publish_detected_persons(pub, t_sec, crowd, crowd_odom, visible_agents):
