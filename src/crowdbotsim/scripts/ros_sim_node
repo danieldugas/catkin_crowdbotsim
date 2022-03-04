@@ -68,10 +68,10 @@ ROBOT_RADIUS = 0.3
 AGENT_RADIUS = 0.33
 
 SIM_FRAME = "sim_map"
-ODOM_FRAME = "/odom"
-LIDAR_FRAME = "/lidar"
-BASE_FOOTPRINT_FRAME = "/base_footprint"
-BASE_LINK_FRAME = "/base_link"
+ODOM_FRAME = "odom"
+LIDAR_FRAME = "lidar"
+BASE_FOOTPRINT_FRAME = "base_footprint"
+BASE_LINK_FRAME = "base_link"
 
 HOMEDIR = os.path.expanduser("~")
 DEFAULT_UNITY_EXE = os.path.join(HOMEDIR, "Code/CrowdBotChallenge/executables/Linux_ETH_cbc_master")

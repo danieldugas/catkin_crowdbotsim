@@ -5,6 +5,11 @@
 
     <node pkg="crowdbotsim" type="ros_sim_node" output="screen" name="ros_sim_node" args=""/>
 
+    <!-- show the robot in rviz -->
+    <include file="$(find turtlebot3_bringup)/launch/includes/description.launch.xml">
+      <arg name="model" value="waffle" />
+    </include>
+
     <node type="rviz" name="rviz" pkg="rviz" args="-d $(find crowdbotsim)/rviz/ros_sim_node.rviz"
         output="log" if="$(arg rviz)"/>
 </launch>
